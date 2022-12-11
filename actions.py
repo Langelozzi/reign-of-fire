@@ -6,6 +6,7 @@ import random
 import time
 import json
 
+from character import Character
 from helpers import Helpers
 
 
@@ -168,7 +169,7 @@ def cell_description() -> None:
 
 
 # Spider Web -----------------------------------------------------------------------------------------------------------
-def spider_web_blockade(character: dict) -> None:
+def spider_web_blockade(character: Character) -> None:
     """
     Print the spider web blockade room dialog and interactions.
 
@@ -182,7 +183,7 @@ def spider_web_blockade(character: dict) -> None:
                            "cyan")
     Helpers.print_in_color("You might be able to use one of your abilities to clear the webs!\n", "cyan")
 
-    ability_options = list(enumerate(character["abilities"], start=1))
+    ability_options = list(enumerate(character.get_abilities(), start=1))
     Helpers.print_user_options(ability_options, "Ability")
 
     ability_used = Helpers.get_user_choice(ability_options)
@@ -192,12 +193,14 @@ def spider_web_blockade(character: dict) -> None:
 
     Helpers.print_in_color("\n\nNice work! You were able to clear out all of those webs with your Fireball!", "cyan")
 
-    if character["level"] < 3:
-        character["xp"] += 12
-        Helpers.print_in_color(f"\n[{character['name']} | xp: +12]", "yellow")
+    if character.get_level() < 3:
+        new_xp = character.get_xp() + 12
+        character.set_xp(new_xp)
+
+        Helpers.print_in_color(f"\n[{character.get_name()} | xp: +12]", "yellow")
 
 
-def empty_room(character: dict) -> bool:
+def empty_room(character: Character) -> bool:
     """
     Print the empty room dialog with the character name.
 
@@ -207,14 +210,14 @@ def empty_room(character: dict) -> bool:
     """
     Helpers.print_in_color("You stop in the center of the room. It appears empty, but you hear a voice whispering..",
                            "cyan")
-    Helpers.print_in_color(f"{character['name']}, keep walking if you know what's good for you!", "cyan")
+    Helpers.print_in_color(f"{character.get_name()}, keep walking if you know what's good for you!", "cyan")
     Helpers.print_in_color("You hastily make your decision..", "cyan")
 
     return True
 
 
 # Default Battles ------------------------------------------------------------------------------------------------------
-def fight(character: dict, enemy: dict) -> bool:
+def fight(character: Character, enemy: dict) -> bool:
     """
     Print dialog and receive decisions for battle mechanics.
 
@@ -230,8 +233,8 @@ def fight(character: dict, enemy: dict) -> bool:
     """
     Helpers.print_in_color(f"\nBoth you and the {enemy['name']} step forward, and prepare for a battle..\n", "cyan")
 
-    while (character["current_hp"] > 0) and (enemy["current_hp"] > 0):
-        ability_options = list(enumerate(character["abilities"], start=1))
+    while (character.get_current_hp() > 0) and (enemy["current_hp"] > 0):
+        ability_options = list(enumerate(character.get_abilities(), start=1))
         Helpers.print_user_options(ability_options, "Ability")
 
         chosen_ability = Helpers.get_user_choice(ability_options)
@@ -239,44 +242,58 @@ def fight(character: dict, enemy: dict) -> bool:
         Helpers.print_in_color(f"\nYour {chosen_ability} hits the {enemy['name']}", "cyan")
         # enemy health will decrease by character damage * character level * (1 + (0.1 * staff rarity))
         try:
-            damage_given = character["damage"] * character["level"] * (1 + (0.2 * character["staff"]["rarity"]))
+            damage_given = (character.get_damage() * character.get_level() *
+                            (1 + (0.2 * character.get_staff()["rarity"])))
         except TypeError:
-            damage_given = character["damage"] * character["level"]
+            damage_given = character.get_damage() * character.get_level()
+
         enemy["current_hp"] -= round(damage_given)
 
         Helpers.print_in_color(f"But the {enemy['name']}'s attack lands successfully as well", "cyan")
         # character health with decrease by 10 * (1 + (0.2 * enemy level))
         damage_taken = 10 * (1 + (0.2 * enemy["level"]))
-        character["current_hp"] -= round(damage_taken)
 
-        Helpers.print_in_color(f"\n[{character['name']} | hp: {character['current_hp']}/{character['max_hp']}]",
-                               "yellow")
+        updated_hp = round(character.get_current_hp() - damage_taken)
+        character.set_current_hp(updated_hp)
+
+        Helpers.print_in_color(f"\n[{character.get_name()} | hp: {character.get_current_hp()}/{character.get_max_hp()}]"
+                               , "yellow")
         print(f"[{enemy['name']} | hp: {enemy['current_hp']}/{enemy['max_hp']}]")
 
-    if (enemy["current_hp"] <= 0) and (character["current_hp"] > 0):
+    if (enemy["current_hp"] <= 0) and (character.get_current_hp() > 0):
         Helpers.print_in_color(f"\n\nCongratulations! You have defeated the {enemy['name']}", "cyan")
 
-        if enemy["level"] > character["level"]:
-            earned_xp = 15 * ((enemy["level"] - character["level"]) + 1)
+        if enemy["level"] > character.get_level():
+            earned_xp = 15 * ((enemy["level"] - character.get_level()) + 1)
         else:
             earned_xp = 15
 
-        if character["level"] < 3:
-            character["xp"] += earned_xp
-            Helpers.print_in_color(f"\n[{character['name']} | xp: +{earned_xp}]", "yellow")
+        if character.get_level() < 3:
+            updated_xp = round(character.get_xp() + earned_xp)
+            character.set_xp(updated_xp)
+            Helpers.print_in_color(f"\n[{character.get_name()} | xp: +{earned_xp}]", "yellow")
 
         enemy_item = enemy["item"]
-        try:
-            character_item_rarity = character[enemy_item["type"]]["rarity"]
-        except TypeError:
-            character_item_rarity = 0
 
-        # gain enemy item if they have one, and it's rarity is more than the one you have
-        if enemy_item and (enemy_item["rarity"] > character_item_rarity):
-            character[enemy["item"]["type"]] = {
+        if enemy_item and (enemy_item["type"] == "staff") and (enemy_item["rarity"] > character.get_staff()["rarity"]):
+            staff = {
                 key: value for key, value in enemy['item'].items() if key != 'type'
             }
-            Helpers.print_in_color(f"[{character['name']} | {enemy['item']['type']}: +{enemy['item']['name']}]\n",
+            character.set_staff(staff)
+
+            Helpers.print_in_color(f"[{character.get_name()} | {enemy['item']['type']}: +{enemy['item']['name']}]\n",
+                                   "yellow")
+        elif (
+                enemy_item and
+                enemy_item["type"] == "armour" and
+                enemy_item["rarity"] > character.get_armour()["rarity"]
+        ):
+            armour = {
+                key: value for key, value in enemy['item'].items() if key != 'type'
+            }
+            character.set_armour(armour)
+
+            Helpers.print_in_color(f"[{character.get_name()} | {enemy['item']['type']}: +{enemy['item']['name']}]\n",
                                    "yellow")
 
         enemy["current_hp"] = enemy["max_hp"]
@@ -310,7 +327,7 @@ def generate_enemy_battle(enemy: dict):
     :return: an enemy battle function with the specific enemy data
     """
 
-    def enemy_battle(character: dict) -> bool:
+    def enemy_battle(character: Character) -> bool:
         """
         Print dialog and receive decisions for choosing whether to start an enemy battle.
 
@@ -324,7 +341,7 @@ def generate_enemy_battle(enemy: dict):
         """
         Helpers.print_in_color(f"Out of the corner of your eye you see a {enemy['name']} appear!\n", "cyan")
 
-        if character["level"] < enemy["level"]:
+        if character.get_level() < enemy["level"]:
             Helpers.print_in_color(f"This enemies level is greater than yours, you might want to weigh your options "
                                    f"before "
                                    f"you make your decision\n", "red")
@@ -362,7 +379,7 @@ def lord_commander_ymir():
         }
     }
 
-    def ymir_battle(character: dict) -> bool:
+    def ymir_battle(character: Character) -> bool:
         """
         Print dialog and receive decisions for choosing whether to start the mini boss battle.
 
@@ -386,7 +403,7 @@ def lord_commander_ymir():
                                "warrior's "
                                "skill.\n", "cyan")
 
-        if character["level"] <= 3:
+        if character.get_level() <= 3:
             Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
                                    f"before "
                                    f"you make your decision\n", "red")
@@ -427,7 +444,7 @@ def royal_mage_angelozzi():
         }
     }
 
-    def angelozzi_battle(character: dict) -> bool:
+    def angelozzi_battle(character: Character) -> bool:
         """
         Print dialog and receive decisions for choosing whether to start the mini boss battle.
 
@@ -448,7 +465,7 @@ def royal_mage_angelozzi():
                                "cathedral entrance.\n", "cyan")
         Helpers.print_in_color(f"You approach the giant knight to observe them better.\n", "cyan")
 
-        if character["level"] <= 3:
+        if character.get_level() <= 3:
             Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
                                    f"before "
                                    f"you make your decision\n", "red")
@@ -490,7 +507,7 @@ def god_king_thompson():
         }
     }
 
-    def thompson_battle(character: dict) -> bool:
+    def thompson_battle(character: Character) -> bool:
         """
         Print dialog and receive decisions for choosing whether to start the final boss battle.
 
@@ -508,7 +525,7 @@ def god_king_thompson():
                                "cyan")
         Helpers.print_in_color("You approach the golden throne\n", "cyan")
 
-        if character["level"] <= 3:  # max level is three?
+        if character.get_level() <= 3:  # max level is three?
             Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
                                    f"before "
                                    f"you make your decision\n", "red")
@@ -539,7 +556,7 @@ def generate_riddle(riddle_data: dict):
     :return: a riddle function with the specific riddle_data
     """
 
-    def riddle_success(character: dict) -> None:
+    def riddle_success(character: Character) -> None:
         """
         Print dialog and accept input for decisions after correctly answering a riddle.
 
@@ -549,14 +566,16 @@ def generate_riddle(riddle_data: dict):
         :precondition: character must be a dictionary in the form of our game character with all proper keys
         :postcondition: prints dialog and accepts input for decisions after correctly answering a riddle
         """
-        Helpers.print_in_color(f"\n\nCongratulations {character['name']}, you are not as dumb as I thought for a "
+        Helpers.print_in_color(f"\n\nCongratulations {character.get_name()}, you are not as dumb as I thought for a "
                                f"creature "
                                f"such "
                                f"as yourself.", "green")
 
-        if character["level"] < 3:
-            character["xp"] += 15
-            Helpers.print_in_color(f"\n[{character['name']} | xp: +15]", "yellow")
+        if character.get_level() < 3:
+            updated_xp = round(character.get_xp() + 15)
+            character.set_xp(updated_xp)
+
+            Helpers.print_in_color(f"\n[{character.get_name()} | xp: +15]", "yellow")
 
         Helpers.print_in_color(f"\n\nTo reward your success, I give you two options: try your luck at possibly "
                                f"earning a "
@@ -572,20 +591,20 @@ def generate_riddle(riddle_data: dict):
             new_ability = riddle_data["ability"]
             if (
                     new_ability is not None and
-                    new_ability not in character["abilities"]
+                    new_ability not in character.get_abilities()
             ):
-                character["abilities"].append(new_ability)
+                character.add_ability(new_ability)
                 print(f"\nYou got lucky! I am feeling generous and will grant you a new ability. You can now use "
                       f"{new_ability}")
-                Helpers.print_in_color(f"\n[{character['name']} | abilities: +'{new_ability}']", "yellow")
+                Helpers.print_in_color(f"\n[{character.get_name()} | abilities: +'{new_ability}']", "yellow")
             else:
                 print("\nOh no, looks like you lost the coin flip, you will not be getting a new ability.")
         else:
-            difference = character["max_hp"] - character["current_hp"]
-            character["current_hp"] = character["max_hp"]
-            Helpers.print_in_color(f"\n[{character['name']} | hp: +{difference}]", "yellow")
+            difference = character.get_max_hp() - character.get_current_hp()
+            character.set_current_hp(character.get_max_hp())
+            Helpers.print_in_color(f"\n[{character.get_name()} | hp: +{difference}]", "yellow")
 
-    def riddle(character: dict) -> bool:
+    def riddle(character: Character) -> bool:
         """
         Print dialog and accept input for answering a riddle.
 
@@ -644,8 +663,8 @@ def generate_riddle(riddle_data: dict):
                                '----------'
                                """, "green")
 
-        print(f"Oh {character['name']}, you foolish creature, how dare you interrupt my slumber. For your transgression"
-              f" you must prove your intellect to me with a riddle if you want me to spare your life..\n")
+        print(f"Oh {character.get_name()}, you foolish creature, how dare you interrupt my slumber. For your "
+              f"transgression you must prove your intellect to me with a riddle if you want me to spare your life..\n")
         time.sleep(1)
         Helpers.print_in_color(riddle_data["question"], "purple")
 
@@ -663,12 +682,17 @@ def generate_riddle(riddle_data: dict):
             riddle_success(character)
             return True
         else:
-            Helpers.print_in_color(f"\n{character['name']}, I knew a creature such as yourself was not intellectually "
-                                   f"gifted. "
-                                   f"That answer is far from correct and for that you must be punished!", "red")
-            lost_hp = character["current_hp"] * 0.25
-            character["current_hp"] -= round(lost_hp)
-            Helpers.print_in_color(f"\n[{character['name']} | hp: -{lost_hp}]", "yellow")
+            Helpers.print_in_color(f"\n{character.get_name()}, I knew a creature such as yourself was not "
+                                   f"intellectually gifted. That answer is far from correct and for that you must be "
+                                   f"punished!", "red")
+
+            lost_hp = character.get_current_hp() * 0.25
+            updated_hp = round(character.get_current_hp() - lost_hp)
+
+            character.set_current_hp(updated_hp)
+
+            Helpers.print_in_color(f"\n[{character.get_name()} | hp: -{lost_hp}]", "yellow")
+
             return False
 
     return riddle
