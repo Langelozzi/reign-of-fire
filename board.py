@@ -18,8 +18,12 @@ class Board:
 
         :param rows: a positive integer
         :param columns: a positive integer
+        :param boss_1_coords: a tuple of positive non-zero integers both between 1 and rows
+        :param boss_2_coords: a tuple of positive non-zero integers both between 1 and rows
         :precondition: rows must be a positive non-zero integer
         :precondition: columns must be a positive non-zero integer
+        :precondition: boss_1_coords must be a tuple of positive integers both between 1 and rows
+        :precondition: boss_1_coords must be a tuple of positive integers both between 1 and rows
         :postcondition: instantiate a board object of size rows * columns
         """
         if (type(rows) is not int) or (type(columns) is not int):
@@ -115,6 +119,12 @@ class Board:
                     self.board[(x_coord, y_coord)]["directions"]["north"] = None
 
     def get_board(self):
+        """
+        Get value of board.
+
+        :postcondition: returns the value of board
+        :return: value of board
+        """
         return self.board
 
     def print_board(self, player_coords: tuple):
@@ -122,7 +132,6 @@ class Board:
         Print the board to stdout.
 
         :param player_coords: a tuple of positive non-zero integers
-
         :precondition: player_coords must be a tuple of positive non-zero integers
         :postcondition: print a game board indicating the map border, uncleared rooms, sub-bosses and a final boss
         """
@@ -178,9 +187,9 @@ class Board:
         Determine if the user input for player movement is valid.
 
         :param direction: one of the following strings in lowercase: "north", "east", "south", "west"
-        :param character: a dictionary in the form of our game character with at least the key "position"
+        :param character: a Character object
         :precondition: direction must be the following strings in lowercase: "north", "east", "south", "west"
-        :precondition: character must be a dictionary in the form of our game character with at least the key "position"
+        :precondition: character must be a Character object
         :postcondition: return True if an x or y coordinates of a next move exists; else False
         :postcondition: parameters passed through this function will remain unchanged
         :return: True if an x or y coordinates of a next move exists; else False if the next coordinate has

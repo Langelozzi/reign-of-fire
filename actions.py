@@ -10,6 +10,10 @@ from enemies import Enemy
 
 
 class ActionGenerator:
+    """
+    Class containing methods for generating the room actions.
+    """
+
     @staticmethod
     def create_batch_of_enemy_battles(amount: int) -> list:
         """
