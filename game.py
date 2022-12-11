@@ -2,10 +2,9 @@
 The primary game module. Contains the game loop.
 """
 
-from board import make_board, describe_current_location, is_valid_move, print_board, boss_defeated
-from character import make_character, is_alive, move_character, get_character_name, show_stats, leveled_up, \
-    level_up_sequence, died, choose_direction
-from helpers import print_in_color
+from board import Board
+from character import Character
+from helpers import print_in_color, get_character_name
 from actions import cell_description, opening_dialogue, game_completed
 
 
@@ -19,54 +18,56 @@ def game() -> None:
     """
     rows = 10
     columns = 10
-    achieved_goal = False
+    boss_1_coords = (4, 4)
+    boss_2_coords = (7, 7)
 
-    board = make_board(rows, columns)
+    board = Board(rows, columns, boss_1_coords, boss_2_coords)
 
     character_name = get_character_name()
-    character = make_character(character_name)
+    character = Character(character_name)
 
     opening_dialogue()
     cell_description()
 
+    achieved_goal = False
     while not achieved_goal:
-        print_board(board, rows, columns, character["position"], (4, 4), (7, 7))
-        choice = choose_direction(board, character)
+        board.print_board(character.get_position())
+        choice = character.choose_direction(board)
 
         if choice == "quit":
             break
         elif choice == "show stats":
-            show_stats(character)
-        elif is_valid_move(choice, board, character):
+            character.show_stats()
+        elif board.is_valid_move(choice, character):
 
-            move_character(choice, board, character)
+            character.move(choice, board)
 
-            print_board(board, rows, columns, character["position"], (4, 4), (7, 7))
+            board.print_board(character.get_position())
 
-            room_solved = board[character["position"]]["solved"]
+            room_solved = board.get_board()[character.get_position()]["solved"]
             if not room_solved:
-                describe_current_location(board, character)
+                board.describe_current_location(character)
 
-                action_function = board[character["position"]]["action"]
+                action_function = board.get_board()[character.get_position()]["action"]
                 if action_function is not None:
-                    board[character["position"]]["solved"] = action_function(character)
+                    board.get_board()[character.get_position()]["solved"] = action_function(character)
             else:
                 print_in_color("\nYou have already completed your duties here, please move on.\n", "cyan")
 
-            if leveled_up(character):
-                level_up_sequence(character)
+            if character.leveled_up():
+                character.level_up_sequence()
 
-            if not is_alive(character):
-                died(character)
+            if not character.is_alive():
+                character.died()
 
-            achieved_goal = boss_defeated(board)
+            achieved_goal = board.boss_defeated()
         else:
             print_in_color("There is no path in that direction, you can't walk through walls!!", "red")
 
     if achieved_goal:
         game_completed()
         print_in_color("<-------------------------------------Final Stats---------------------------------->", "green")
-        show_stats(character)
+        character.show_stats()
     else:
         print_in_color("\nThanks for playing, we hope you play again sometime :)", "cyan")
 
