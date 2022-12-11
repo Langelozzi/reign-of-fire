@@ -1,0 +1,118 @@
+[
+  {
+    "name": "Skeleton Soldier",
+    "max_hp": 100,
+    "current_hp": 100,
+    "level": 1,
+    "item": {
+      "type": "armour",
+      "name": "Rusted Armour",
+      "rarity": 1
+    }
+  },
+  {
+    "name": "Undead Knight",
+    "max_hp": 125,
+    "current_hp": 125,
+    "level": 2,
+    "item": {
+      "type": "armour",
+      "name": "Knight's Armour",
+      "rarity": 2
+    }
+  },
+  {
+    "name": "Corrupted Crusader",
+    "max_hp": 150,
+    "current_hp": 150,
+    "level": 3,
+    "item": {
+      "type": "armour",
+      "name": "Crusader's Cursed Armour",
+      "rarity": 3
+    }
+  },
+  {
+    "name": "Draconic Knight",
+    "max_hp": 200,
+    "current_hp": 200,
+    "level": 4,
+    "item": {
+      "type": "armour",
+      "name": "Draconic Armour",
+      "rarity": 4
+    }
+  },
+  {
+    "name": "Giant Rat",
+    "max_hp": 100,
+    "current_hp": 100,
+    "level": 1,
+    "item": null
+  },
+  {
+    "name": "Lesser Shade",
+    "max_hp": 125,
+    "current_hp": 125,
+    "level": 2,
+    "item": null
+  },
+  {
+    "name": "Rabid Werewolf",
+    "max_hp": 150,
+    "current_hp": 150,
+    "level": 3,
+    "item": null
+  },
+  {
+    "name": "Stone Golem",
+    "max_hp": 200,
+    "current_hp": 200,
+    "level": 4,
+    "item": null
+  },
+  {
+    "name": "Skeletal Sorcerer",
+    "max_hp": 100,
+    "current_hp": 100,
+    "level": 1,
+    "item": {
+      "type": "staff",
+    "name": "Wooden Staff",
+      "rarity": 1
+    }
+  },
+  {
+    "name": "Undead Battlemage",
+    "max_hp": 125,
+    "current_hp": 125,
+    "level": 2,
+    "item": {
+      "type": "staff",
+      "name": "Battlemage's Staff",
+      "rarity": 2
+    }
+  },
+  {
+    "name": "Corrupted Spellsword",
+    "max_hp": 150,
+    "current_hp": 150,
+    "level": 3,
+    "item": {
+      "type": "staff",
+      "name": "Spellsword's Corrupted Staff",
+      "rarity": 3
+    }
+  },
+  {
+    "name": "Draconic Lich Knight",
+    "max_hp": 200,
+    "current_hp": 200,
+    "level": 4,
+    "item": {
+      "type": "staff",
+      "name": "Draconic Staff",
+      "rarity": 4
+    }
+  }
+]
