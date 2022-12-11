@@ -6,7 +6,7 @@ from helpers import print_in_color, print_user_options, get_user_choice
 
 
 class Character:
-    def __init__(self, name: str, ):
+    def __init__(self, name: str) -> None:
         """
         Instantiate a new character object with name.
 
@@ -15,7 +15,7 @@ class Character:
         :postcondition: instantiates a new character object with name
         """
         if type(name) != str:
-            raise ValueError('Character name must be a string!')
+            raise TypeError('Character name must be a string!')
 
         self.name = name
         self.position = (1, 1)
