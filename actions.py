@@ -4,7 +4,6 @@ Contains functions related to the actions and dialog of each room on the game bo
 import itertools
 import random
 import json
-
 from riddle import Riddle
 from generic_rooms import GenericRooms
 from enemies import Enemy

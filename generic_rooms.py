@@ -61,3 +61,15 @@ class GenericRooms:
         Helpers.print_in_color("You hastily make your decision..", "cyan")
 
         return True
+
+
+def main() -> None:
+    """
+    Drive the program.
+    """
+    print("You are attempting to execute the generic_rooms.py module.")
+    print("Executing this module does not do anything.")
+
+
+if __name__ == "__main__":
+    main()

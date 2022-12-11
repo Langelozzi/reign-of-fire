@@ -3,7 +3,6 @@ Module containing the Story class.
 """
 
 import time
-
 from helpers import Helpers
 
 
@@ -222,3 +221,15 @@ class Story:
                                 \U0001F389 You won the game! \U0001F389 	                                                    
                                \U0001F970 Thanks for playing! \U0001F970 	 	                                                    
         """, "cyan")
+
+
+def main() -> None:
+    """
+    Drive the program.
+    """
+    print("You are attempting to execute the story.py module.")
+    print("Executing this module does not do anything.")
+
+
+if __name__ == "__main__":
+    main()

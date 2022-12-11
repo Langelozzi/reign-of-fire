@@ -334,3 +334,15 @@ class GodKingThompson(Enemy):
         else:
             Helpers.print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
             return False
+
+
+def main() -> None:
+    """
+    Drive the program.
+    """
+    print("You are attempting to execute the enemies.py module.")
+    print("Executing this module does not do anything.")
+
+
+if __name__ == "__main__":
+    main()
