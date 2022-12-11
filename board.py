@@ -107,6 +107,9 @@ class Board:
                 if y_coord == self.columns and x_coord != self.rows:
                     self.board[(x_coord, y_coord)]["directions"]["north"] = None
 
+    def get_board(self):
+        return self.board
+
     def print_board(self, player_coords: tuple):
         """
         Print the board to stdout.
@@ -160,7 +163,7 @@ class Board:
         :postcondition: prints the content of the key "description" from self.board dictionary
         :postcondition: character object passed through this function will remain unchanged
         """
-        current_position = character.position
+        current_position = character.get_position()
         print_in_color(self.board[current_position]["description"], "cyan")
 
     def is_valid_move(self, direction: str, character) -> bool:
@@ -176,7 +179,7 @@ class Board:
         :return: True if an x or y coordinates of a next move exists; else False if the next coordinate has
                  None value
         """
-        current_position = character.position
+        current_position = character.get_position()
         try:
             if self.board[current_position]["directions"][direction] is not None:
                 return True
