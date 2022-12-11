@@ -1,4 +1,4 @@
-# 1510-Assignment-4
+# Reign of Fire
 
 ```angular2html
  _______  _______ _________ _______  _          _______  _______    _______ _________ _______  _______
@@ -50,40 +50,8 @@ humanity. We wish you the best of luck on your quest!
 ```
 
 
-## Your names:
+## Developers:
 
 * Lucas Angelozzi
 * Amir Eskandari
 
-## Your student numbers:
-
-* A01270381
-* A01187752
-
-## Your GitHub account IDs:
-
-* Langelozzi
-* am-eskandari
-
-## Any important comments you'd like to make about your work:
-
-* In some doctests, such as make_character in character.py, the tests fail unless it is all one line, therefore
-  forcing us to disobey the pycharm syntax warning for line length
-* The functions that were not unit tested either contained large amounts of print and input, or required more 
-  knowledge than we covered in our course, such as reading json
-
-## Code Requirements
-
-| Required Element                  | Location (Line Number)                                |
-|:----------------------------------|:------------------------------------------------------|
-| Tuple                             | character.py -- lines 205-206                         |
-| List                              | character.py -- line 200                              |
-| List/Dict comprehension           | helpers.py -- line 122 <br/> character.py -- line 62  |
-| Selection using if                | actions.py -- line 554 <br/> character.py -- line 130 |
-| Repetition with for or while loop | character.py -- line 238 <br/> helpers.py -- line 113 |
-| The membership operator (in)      | helpers.py -- line 113                                |
-| The range function                | board.py -- line 72                                   |
-| One or more itertools functions   | board.py -- line 70 <br/> actions.py -- line 765      |
-| The enumerate function            | actions.py -- line 632                                |
-| The filter or map function        | helpers.py -- line 106                                |
-| The random module                 | actions.py -- line 743 <br/> actions.py -- line 770   |
