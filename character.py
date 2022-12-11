@@ -168,32 +168,28 @@ class Character:
         print_in_color("You feel stronger, your veins are coursing with denser magic and your mana shield has "
                        "strengthened!", "yellow")
 
+    def died(self) -> None:
+        """
+        Resets character position to start and character level to 1 as if they just started the game.
 
-def died(character: dict) -> None:
-    """
-    Resets character position to start and character level to 1 as if they just started the game.
+        All items and abilities are retained. Ascii art gets printed. Modifies the original character dictionary.
 
-    All items and abilities are retained. Ascii art gets printed. Modifies the original character dictionary.
+        :postcondition: Resets character position to start and character level to 1
+        """
+        self.__position = (1, 1)
+        self.__xp = 0
+        self.__level = 1
+        self.__current_hp = 100
 
-    :param character: a character in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with at least the keys "xp",
-    "level", "position" and "current_hp"
-    :postcondition: Resets character position to start and character level to 1
-    """
-    character["position"] = (1, 1)
-    character["xp"] = 0
-    character["level"] = 1
-    character["current_hp"] = 100
-
-    print_in_color("""
-                         __     __                    _____    _              _                                     
-                         \ \   / /                   |  __ \  (_)            | |                                    
-                          \ \_/ /    ___    _   _    | |  | |  _    ___    __| |                                    
-                           \   /    / _ \  | | | |   | |  | | | |  / _ \  / _` |                                    
-                            | |    | (_) | | |_| |   | |__| | | | |  __/ | (_| |                                    
-                            |_|     \___/   \__,_|   |_____/  |_|  \___|  \__,_|                                    
-                                      \U00002620 Rip, you died. Skill issue. \U00002620                                                  
-    """, "red")
+        print_in_color("""
+                             __     __                    _____    _              _                                     
+                             \ \   / /                   |  __ \  (_)            | |                                    
+                              \ \_/ /    ___    _   _    | |  | |  _    ___    __| |                                    
+                               \   /    / _ \  | | | |   | |  | | | |  / _ \  / _` |                                    
+                                | |    | (_) | | |_| |   | |__| | | | |  __/ | (_| |                                    
+                                |_|     \___/   \__,_|   |_____/  |_|  \___|  \__,_|                                    
+                                          \U00002620 Rip, you died. Skill issue. \U00002620                                                  
+        """, "red")
 
 
 
