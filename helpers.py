@@ -4,6 +4,10 @@ Functions to assist in the creation of the game.
 
 
 class Helpers:
+    """
+    A class containing helper functions for the game.
+    """
+
     @staticmethod
     def print_in_color(value, color: str, end: str = "\n") -> None:
         """

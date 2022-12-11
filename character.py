@@ -6,6 +6,10 @@ from helpers import Helpers
 
 
 class Character:
+    """
+    Represents a player character in the game.
+    """
+
     def __init__(self, name: str) -> None:
         """
         Instantiate a new character object with name.

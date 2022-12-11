@@ -9,6 +9,10 @@ from actions import get_generic_actions, get_generic_room_description, \
 
 
 class Board:
+    """
+    A class to represent the game board.
+    """
+
     def __init__(self, rows: int, columns: int, boss_1_coords: tuple, boss_2_coords: tuple) -> None:
         """
         Instantiate a board object of size rows * columns.
