@@ -163,6 +163,28 @@ class Board:
         current_position = character.position
         print_in_color(self.board[current_position]["description"], "cyan")
 
+    def is_valid_move(self, direction: str, character) -> bool:
+        """
+        Determine if the user input for player movement is valid.
+
+        :param direction: one of the following strings in lowercase: "north", "east", "south", "west"
+        :param character: a dictionary in the form of our game character with at least the key "position"
+        :precondition: direction must be the following strings in lowercase: "north", "east", "south", "west"
+        :precondition: character must be a dictionary in the form of our game character with at least the key "position"
+        :postcondition: return True if an x or y coordinates of a next move exists; else False
+        :postcondition: parameters passed through this function will remain unchanged
+        :return: True if an x or y coordinates of a next move exists; else False if the next coordinate has
+                 None value
+        """
+        current_position = character.position
+        try:
+            if self.board[current_position]["directions"][direction] is not None:
+                return True
+        except KeyError:
+            return False
+        else:
+            return False
+
 
 def print_board(board: dict, rows: int, columns: int, coords: tuple, boss_1_coords: tuple, boss_2_coords: tuple):
     """
