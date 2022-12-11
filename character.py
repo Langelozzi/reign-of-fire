@@ -43,6 +43,14 @@ class Character:
     def get_xp(self):
         return self.__xp
 
+    def set_xp(self, xp: int):
+        if type(xp) is not int:
+            raise TypeError('xp must be an integer')
+        if xp < 0 or xp > 60:
+            raise ValueError('xp must be between 0 and 60 inclusive')
+
+        self.__xp = xp
+
     def get_damage(self):
         return self.__damage
 
