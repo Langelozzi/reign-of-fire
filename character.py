@@ -101,7 +101,7 @@ class Character:
         :postcondition: prints the possible choices and returns the user selected choice as a string
         :return: the user selected choice as a string
         """
-        current_room = board.board[self.__position]
+        current_room = board.get_board()[self.__position]
         possible_directions = [direction for direction, coord in current_room["directions"].items() if
                                coord is not None]
 
@@ -112,14 +112,14 @@ class Character:
 
         return get_user_choice(options)
 
-    def move_character(self, direction: str, board: dict) -> None:
+    def move(self, direction: str, board) -> None:
         """
         Modify the character position accordingly based on the direction. Original character is modified, board is not.
 
         :param direction: one of the following strings in lowercase: "north", "east", "south", "west"
-        :param board: a dictionary in the form of our game board with all proper keys
+        :param board: an instance of the Board class
         :precondition: direction must be one of the following strings in lowercase: "north", "east", "south", "west"
-        :precondition: board must be a dictionary in the form of our game board
+        :precondition: board must be a Board object
         :postcondition: changes the character position according to the direction they moved
         """
         current_room = board[self.__position]
@@ -190,7 +190,6 @@ class Character:
                                 |_|     \___/   \__,_|   |_____/  |_|  \___|  \__,_|                                    
                                           \U00002620 Rip, you died. Skill issue. \U00002620                                                  
         """, "red")
-
 
 
 def main() -> None:
