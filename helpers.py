@@ -122,6 +122,17 @@ def get_user_choice(options: list, numeric: bool = False) -> str:
     return [option for number, option in options if number == user_choice][0]
 
 
+def get_character_name() -> str:
+    """
+    Return the input from the user.
+
+    :postcondition: returns the string value of what the user entered into stdin
+    :return: the input from the user, as a string
+    """
+    print_in_color("Please enter a name for your character..", "purple")
+    return input()
+
+
 def main() -> None:
     """
     Drive the program.

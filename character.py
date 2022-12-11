@@ -5,43 +5,53 @@ Contains functions related to the game characters attributes and state.
 from helpers import print_in_color, print_user_options, get_user_choice
 
 
-def get_character_name() -> str:
-    """
-    Return the input from the user.
+class Character:
+    def __init__(self, name: str, ):
+        """
+        Instantiate a new character object with name.
 
-    :postcondition: returns the string value of what the user entered into stdin
-    :return: the input from the user, as a string
-    """
-    print_in_color("Please enter a name for your character..", "purple")
-    return input()
+        :param name: the name of the character, as a string
+        :precondition: name must be a string
+        :postcondition: instantiates a new character object with name
+        """
+        if type(name) != str:
+            raise ValueError('Character name must be a string!')
 
+        self.name = name
+        self.position = (1, 1)
+        self.max_hp = 100,
+        self.current_hp = 100
+        self.xp = 0
+        self.damage = 20
+        self.level = 1
+        self.abilities = ["Fireball"]
+        self.staff = None
+        self.armour = None
 
-def make_character(name: str) -> dict:
-    """
-    Generate and return a dictionary representing a game character.
+    def choose_direction(self, board) -> str:
+        """
+        Print possible choices and return the user's selected choice.
 
-    :param name: the name of the character, as a string
-    :precondition: name must be a string
-    :postcondition: returns a newly created character dictionary with the proper name
-    :return: a newly created character dictionary with the proper name
+        The board and character dictionaries are not modified.
 
-    >>> make_character("Chris")
-    {'name': 'Chris', 'position': (1, 1), 'max_hp': 100, 'current_hp': 100, 'xp': 0, 'damage': 20, 'level': 1, 'abilities': ['Fireball'], 'staff': None, 'armour': None}
-    >>> make_character("N3p7un3")
-    {'name': 'N3p7un3', 'position': (1, 1), 'max_hp': 100, 'current_hp': 100, 'xp': 0, 'damage': 20, 'level': 1, 'abilities': ['Fireball'], 'staff': None, 'armour': None}
-    """
-    return {
-        "name": name,
-        "position": (1, 1),
-        "max_hp": 100,
-        "current_hp": 100,
-        "xp": 0,
-        "damage": 20,
-        "level": 1,
-        "abilities": ["Fireball"],
-        "staff": None,
-        "armour": None
-    }
+        :param board: a dictionary in the form of our game board with all proper keys
+        :param character: a dictionary in the form of our game character with at least keys "position" and "name"
+        :precondition: board must be a dictionary in the form of our game board
+        :precondition: character must be a dictionary in the form of our game character with at least keys "position" and
+        "name"
+        :postcondition: prints the possible choices and returns the user selected choice as a string
+        :return: the user selected choice as a string
+        """
+        current_room = board.board[self.position]
+        possible_directions = [direction for direction, coord in current_room["directions"].items() if
+                               coord is not None]
+
+        options = [('q', "quit"), ('s', "show stats")]
+        options += list(enumerate(possible_directions, start=1))
+
+        print_user_options(options, "Option")
+
+        return get_user_choice(options)
 
 
 def choose_direction(board: dict, character: dict) -> str:
