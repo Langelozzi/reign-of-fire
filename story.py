@@ -33,13 +33,13 @@ class Story:
                         "casting\nthe rest humanity into darkness...\n"
 
         Helpers.print_in_color("...\n", "cyan")
-        time.sleep(1)
+        time.sleep(2)
         Helpers.print_in_color(opening_one, "cyan")
-        time.sleep(1)
+        time.sleep(4)
         Helpers.print_in_color(opening_two, "cyan")
-        time.sleep(1)
+        time.sleep(4)
         Helpers.print_in_color(opening_three, "cyan")
-        time.sleep(3)
+        time.sleep(7)
         Helpers.print_in_color(r"""
 
                                                           %#&&%%#*                                      
@@ -156,19 +156,19 @@ class Story:
                    "- Have fun!\n\n"
 
         Helpers.print_in_color("**CLANK**\n", "cyan")
-        time.sleep(1)
+        time.sleep(3)
         Helpers.print_in_color(part_one, "cyan")
-        time.sleep(1)
+        time.sleep(4)
         Helpers.print_in_color(part_two, "cyan")
-        time.sleep(1)
+        time.sleep(4)
         Helpers.print_in_color(part_three, "cyan")
-        time.sleep(1)
+        time.sleep(4)
         Helpers.print_in_color(part_four, "cyan")
-        time.sleep(1)
+        time.sleep(4)
         Helpers.print_in_color(part_five, "cyan")
-        time.sleep(1)
+        time.sleep(4)
         Helpers.print_in_color(part_six, "purple")
-        time.sleep(1)
+        time.sleep(4)
 
     # Game finished dialog ---------------------------------------------------------------------------------------------
     @staticmethod
@@ -180,16 +180,16 @@ class Story:
         """
 
         Helpers.print_in_color("...\n", "cyan")
-        time.sleep(1)
+        time.sleep(2)
         print("H-How is this possible...how can a mortal like you defeat me,")
         Helpers.print_in_color("\nThe King collapsed to the ground. You did it, You finally defeated him!\n"
                                "His body turns into a golden dust as the flame of humanity returned to the golden alter"
                                " sitting behind the throne.\n", "cyan")
-        time.sleep(1)
+        time.sleep(5)
         Helpers.print_in_color("It's finally over, the flame is finally back to where it should be...\n"
                                "You collapsed to the ground in exhaustion...this is the start of a new era...\n",
                                "cyan")
-        time.sleep(3)
+        time.sleep(6)
         Helpers.print_in_color("""
 
                                           _A_
