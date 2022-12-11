@@ -1,5 +1,5 @@
 """
-Contains functions related to the creation and state of the game board.
+Module containing the Board class.
 """
 import itertools
 
@@ -185,125 +185,139 @@ class Board:
         else:
             return False
 
+    def boss_defeated(self) -> bool:
+        """
+        Determine if the final boss is defeated.
 
-def print_board(board: dict, rows: int, columns: int, coords: tuple, boss_1_coords: tuple, boss_2_coords: tuple):
-    """
-    Print a game board indicating the map border, uncleared rooms, sub-bosses and a final boss.
-    
-    The size is determined by the parameter that is passed through this function.
+        :postcondition: return True if a value tied to the 'solved' key in board is
+                        True; else False
+        :return: True if a value tied to the 'solved' key in board[(10,11)] is True; else False
 
-    The board dictionary is not modified during execution.
-
-    :param board: a dictionary in the form of our game board with at least the key "solved"
-    :param rows: a positive integer
-    :param columns: a positive integer
-    :param coords: a tuple of positive non-zero integers
-    :param boss_1_coords: a tuple of positive non-zero integers which is determined in the main game function
-    :param boss_2_coords: a tuple of positive non-zero integers which is determined in the main game function
-    :precondition: board must be a dictionary in the form of our game board with at least the key "solved"
-    :precondition: rows must be a positive non-zero integer
-    :precondition: columns must be a positive non-zero integer
-    :precondition: coords must be a tuple of positive non-zero integers
-    :precondition: boss_1_coords must be a tuple of positive non-zero integers
-    :precondition: boss_2_coords must be a tuple of positive non-zero integers
-    :postcondition: print a game board indicating the map border, uncleared rooms, sub-bosses and a final boss
-    """
-    x_pos, y_pos = coords
-    boss_1_x, boss_1_y = boss_1_coords
-    boss_2_x, boss_2_y = boss_2_coords
-    final_boss_x, final_boss_y = (10, 11)
-
-    print()
-    for y_coord in range(columns + 1, -1, -1):
-        for x_coord in range(1, rows + 1, 1):
-            if y_coord == y_pos and x_coord == x_pos:
-                print_in_color('|', "green", end="")
-                print_in_color("#", "purple", end="")
-                print_in_color('|', "green", end="")
-
-            elif (y_coord == 0 and x_coord == 1) or ((x_coord, y_coord) in board.keys()) and \
-                    (board[(x_coord, y_coord)]["solved"]):
-                print_in_color('| |', "green", end="")
-
-            elif (y_coord == boss_1_y and x_coord == boss_1_x) or (y_coord == boss_2_y and x_coord == boss_2_x):
-                print_in_color('|', "green", end="")
-                print_in_color("X", "red", end="")
-                print_in_color('|', "green", end="")
-
-            elif (y_coord == final_boss_y) and (x_coord == final_boss_x):
-                print_in_color('|', "green", end="")
-                print_in_color("\U0001F451", "red", end="")
-                print_in_color('|', "green", end="")
-
-            elif (y_coord == 11 and x_coord != 10) or (y_coord == 0 and x_coord != 1):
-                print_in_color('---', "green", end="")
-
-            else:
-                print_in_color('|?|', "green", end="")
-
-        print()
+        >>> test_board = { (10, 11): {"description": "God-King Thompson, the God Slayer", "action": god_king_thompson(), "solved": False, "directions": {"north": None, "east": None, "south": (10, 10), "west": None} } }
+        >>> boss_defeated(test_board)
+        False
+        """
+        return True if self.board[(10, 11)]['solved'] else False
 
 
-def describe_current_location(self, character: dict) -> None:
-    """
-    Print the description of the room that the player is currently in.
-
-    :param board: a dictionary in the form of our game board
-    :param character: a dictionary in the form of our game character with at least the key "position"
-    :precondition: board must be a dictionary in the form of our game board
-    :precondition: character must be a dictionary in the form of our game character with at least the key "position"
-    :postcondition: prints the content of the key "description" from board dictionary
-    :postcondition: parameters passed through this function will remain unchanged
-    """
-    current_position = character["position"]
-    print_in_color(board[current_position]["description"], "cyan")
-
-
-def is_valid_move(direction: str, board: dict, character: dict) -> bool:
-    """
-    Determine if the user input for player movement is valid.
-
-    :param direction: one of the following strings in lowercase: "north", "east", "south", "west"
-    :param board: a dictionary in the form of our game board with all proper keys
-    :param character: a dictionary in the form of our game character with at least the key "position"
-    :precondition: board must be a dictionary in the form of our game
-    :precondition: direction must be the following strings in lowercase: "north", "east", "south", "west"
-    :precondition: character must be a dictionary in the form of our game character with at least the key "position"
-    :postcondition: return True if an x or y coordinates of a next move exists; else False
-    :postcondition: parameters passed through this function will remain unchanged
-    :return: True if an x or y coordinates of a next move exists; else False if the next coordinate has
-             None value
-    """
-    current_position = character["position"]
-    try:
-        if board[current_position]["directions"][direction] is not None:
-            return True
-    except KeyError:
-        return False
-    else:
-        return False
-
-
-def boss_defeated(board: dict) -> bool:
-    """
-    Determine if the final boss is defeated.
-
-    Read through a dictionary of a module to determine if the final boss is defeated.
-    Return True if it is; else False.
-
-    :param board: a dictionary in the form of our game board with all proper keys
-    :precondition: board must be a dictionary in the form of our game board with
-                   at least the key "solved"
-    :postcondition: return True if a value tied to the 'solved' key in board is
-                    True; else False
-    :postcondition: board is unchanged
-    :return: True if a value tied to the 'solved' key in board[(10,11)] is True; else False
-
-    >>> test_board = { (10, 11): {"description": "God-King Thompson, the God Slayer", "action": god_king_thompson(), "solved": False, "directions": {"north": None, "east": None, "south": (10, 10), "west": None} } }
-    >>> boss_defeated(test_board)
-    False
-    """
-    return True if board[(10, 11)]['solved'] else False
+# def print_board(board: dict, rows: int, columns: int, coords: tuple, boss_1_coords: tuple, boss_2_coords: tuple):
+#     """
+#     Print a game board indicating the map border, uncleared rooms, sub-bosses and a final boss.
+#
+#     The size is determined by the parameter that is passed through this function.
+#
+#     The board dictionary is not modified during execution.
+#
+#     :param board: a dictionary in the form of our game board with at least the key "solved"
+#     :param rows: a positive integer
+#     :param columns: a positive integer
+#     :param coords: a tuple of positive non-zero integers
+#     :param boss_1_coords: a tuple of positive non-zero integers which is determined in the main game function
+#     :param boss_2_coords: a tuple of positive non-zero integers which is determined in the main game function
+#     :precondition: board must be a dictionary in the form of our game board with at least the key "solved"
+#     :precondition: rows must be a positive non-zero integer
+#     :precondition: columns must be a positive non-zero integer
+#     :precondition: coords must be a tuple of positive non-zero integers
+#     :precondition: boss_1_coords must be a tuple of positive non-zero integers
+#     :precondition: boss_2_coords must be a tuple of positive non-zero integers
+#     :postcondition: print a game board indicating the map border, uncleared rooms, sub-bosses and a final boss
+#     """
+#     x_pos, y_pos = coords
+#     boss_1_x, boss_1_y = boss_1_coords
+#     boss_2_x, boss_2_y = boss_2_coords
+#     final_boss_x, final_boss_y = (10, 11)
+#
+#     print()
+#     for y_coord in range(columns + 1, -1, -1):
+#         for x_coord in range(1, rows + 1, 1):
+#             if y_coord == y_pos and x_coord == x_pos:
+#                 print_in_color('|', "green", end="")
+#                 print_in_color("#", "purple", end="")
+#                 print_in_color('|', "green", end="")
+#
+#             elif (y_coord == 0 and x_coord == 1) or ((x_coord, y_coord) in board.keys()) and \
+#                     (board[(x_coord, y_coord)]["solved"]):
+#                 print_in_color('| |', "green", end="")
+#
+#             elif (y_coord == boss_1_y and x_coord == boss_1_x) or (y_coord == boss_2_y and x_coord == boss_2_x):
+#                 print_in_color('|', "green", end="")
+#                 print_in_color("X", "red", end="")
+#                 print_in_color('|', "green", end="")
+#
+#             elif (y_coord == final_boss_y) and (x_coord == final_boss_x):
+#                 print_in_color('|', "green", end="")
+#                 print_in_color("\U0001F451", "red", end="")
+#                 print_in_color('|', "green", end="")
+#
+#             elif (y_coord == 11 and x_coord != 10) or (y_coord == 0 and x_coord != 1):
+#                 print_in_color('---', "green", end="")
+#
+#             else:
+#                 print_in_color('|?|', "green", end="")
+#
+#         print()
+#
+#
+# def describe_current_location(self, character: dict) -> None:
+#     """
+#     Print the description of the room that the player is currently in.
+#
+#     :param board: a dictionary in the form of our game board
+#     :param character: a dictionary in the form of our game character with at least the key "position"
+#     :precondition: board must be a dictionary in the form of our game board
+#     :precondition: character must be a dictionary in the form of our game character with at least the key "position"
+#     :postcondition: prints the content of the key "description" from board dictionary
+#     :postcondition: parameters passed through this function will remain unchanged
+#     """
+#     current_position = character["position"]
+#     print_in_color(self.board[current_position]["description"], "cyan")
+#
+#
+# def is_valid_move(direction: str, board: dict, character: dict) -> bool:
+#     """
+#     Determine if the user input for player movement is valid.
+#
+#     :param direction: one of the following strings in lowercase: "north", "east", "south", "west"
+#     :param board: a dictionary in the form of our game board with all proper keys
+#     :param character: a dictionary in the form of our game character with at least the key "position"
+#     :precondition: board must be a dictionary in the form of our game
+#     :precondition: direction must be the following strings in lowercase: "north", "east", "south", "west"
+#     :precondition: character must be a dictionary in the form of our game character with at least the key "position"
+#     :postcondition: return True if an x or y coordinates of a next move exists; else False
+#     :postcondition: parameters passed through this function will remain unchanged
+#     :return: True if an x or y coordinates of a next move exists; else False if the next coordinate has
+#              None value
+#     """
+#     current_position = character["position"]
+#     try:
+#         if board[current_position]["directions"][direction] is not None:
+#             return True
+#     except KeyError:
+#         return False
+#     else:
+#         return False
+#
+#
+# def boss_defeated(board: dict) -> bool:
+#     """
+#     Determine if the final boss is defeated.
+#
+#     Read through a dictionary of a module to determine if the final boss is defeated.
+#     Return True if it is; else False.
+#
+#     :param board: a dictionary in the form of our game board with all proper keys
+#     :precondition: board must be a dictionary in the form of our game board with
+#                    at least the key "solved"
+#     :postcondition: return True if a value tied to the 'solved' key in board is
+#                     True; else False
+#     :postcondition: board is unchanged
+#     :return: True if a value tied to the 'solved' key in board[(10,11)] is True; else False
+#
+#     >>> test_board = { (10, 11): {"description": "God-King Thompson, the God Slayer", "action": god_king_thompson(), "solved": False, "directions": {"north": None, "east": None, "south": (10, 10), "west": None} } }
+#     >>> boss_defeated(test_board)
+#     False
+#     """
+#     return True if board[(10, 11)]['solved'] else False
 
 
 def main():
