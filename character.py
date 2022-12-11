@@ -3,6 +3,7 @@ Contains functions related to the game characters attributes and state.
 """
 
 from helpers import Helpers
+from board import Board
 
 
 class Character:
@@ -148,7 +149,7 @@ class Character:
 
         print('+----------------------------------------------------------------------------------+')
 
-    def choose_direction(self, board) -> str:
+    def choose_direction(self, board: Board) -> str:
         """
         Print possible choices and return the user's selected choice.
 
@@ -170,7 +171,7 @@ class Character:
 
         return Helpers.get_user_choice(options)
 
-    def move(self, direction: str, board) -> None:
+    def move(self, direction: str, board: Board) -> None:
         """
         Modify the character position accordingly based on the direction. Original character is modified, board is not.
 
@@ -180,7 +181,7 @@ class Character:
         :precondition: board must be a Board object
         :postcondition: changes the character position according to the direction they moved
         """
-        current_room = board[self.__position]
+        current_room = board.get_board()[self.__position]
         self.__position = current_room["directions"][direction]
 
     def is_alive(self) -> bool:
