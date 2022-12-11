@@ -15,10 +15,10 @@ class Riddle:
         if type(riddle_data) is not dict:
             raise TypeError("Riddle data must be a dictionary")
 
-        self.question = riddle_data["question"]
-        self.options = riddle_data["options"]
-        self.answer = riddle_data["answer"]
-        self.ability = riddle_data["ability"]
+        self.__question = riddle_data["question"]
+        self.__options = riddle_data["options"]
+        self.__answer = riddle_data["answer"]
+        self.__ability = riddle_data["ability"]
 
     def riddle_success(self, character) -> None:
         """
@@ -50,7 +50,7 @@ class Riddle:
         user_choice = Helpers.get_user_choice(success_options, True)
 
         if int(user_choice) == 1:
-            new_ability = self.ability
+            new_ability = self.__ability
             if (
                     new_ability is not None and
                     new_ability not in character.get_abilities()
@@ -126,9 +126,9 @@ class Riddle:
         print(f"Oh {character.get_name()}, you foolish creature, how dare you interrupt my slumber. For your "
               f"transgression you must prove your intellect to me with a riddle if you want me to spare your life..\n")
         time.sleep(1)
-        Helpers.print_in_color(self.question, "purple")
+        Helpers.print_in_color(self.__question, "purple")
 
-        options = list(enumerate(self.options, start=1))
+        options = list(enumerate(self.__options, start=1))
 
         Helpers.print_user_options(options, "Response")
 
@@ -138,7 +138,7 @@ class Riddle:
 
         user_answer = Helpers.get_user_choice(options)
 
-        if user_answer == self.answer:
+        if user_answer == self.__answer:
             self.riddle_success(character)
             return True
         else:
