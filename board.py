@@ -194,7 +194,7 @@ class Board:
         :return: True if a value tied to the 'solved' key in board[(10,11)] is True; else False
 
         >>> test_board = { (10, 11): {"description": "God-King Thompson, the God Slayer", "action": god_king_thompson(), "solved": False, "directions": {"north": None, "east": None, "south": (10, 10), "west": None} } }
-        >>> boss_defeated(test_board)
+        >>> self.boss_defeated(test_board)
         False
         """
         return True if self.board[(10, 11)]['solved'] else False
