@@ -58,7 +58,7 @@ class Character:
     def set_xp(self, xp: int):
         if type(xp) is not int:
             raise TypeError('xp must be an integer')
-        if (xp < 0) or (xp > 60):
+        if xp < 0:
             raise ValueError('xp must be between 0 and 60 inclusive')
 
         self.__xp = xp
@@ -88,7 +88,7 @@ class Character:
         if type(new_armour) is not dict:
             raise TypeError("Armour must be a dictionary")
 
-        self.__staff = new_armour
+        self.__armour = new_armour
 
     def add_ability(self, new_ability: str) -> None:
         self.__abilities.append(new_ability)
