@@ -184,7 +184,6 @@ class RoyalMageAngelozzi(Enemy):
                                    f"you make your decision\n", "red")
 
         options = list(enumerate(["Fight", "Flee"], start=1))
-
         Helpers.print_user_options(options, "Choice")
 
         decision = Helpers.get_user_choice(options, True)
@@ -248,7 +247,6 @@ class LordCommanderYmir(Enemy):
                                    f"you make your decision\n", "red")
 
         options = list(enumerate(["Fight", "Flee"], start=1))
-
         Helpers.print_user_options(options, "Choice")
 
         decision = Helpers.get_user_choice(options, True)
@@ -258,6 +256,63 @@ class LordCommanderYmir(Enemy):
             print("I commend you for making this far, but, your luck ends here, mortal.\n"
                   "On my honour as the Right wing of Alyndelle, the guardian of this empire,\n"
                   "and as the Lord-Commander, I must stop you.\n")
+
+            return super().fight(character)
+        else:
+            Helpers.print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
+            return False
+
+
+class GodKingThompson(Enemy):
+    def __init__(self):
+        thompson = {
+            "name": "God-King Thompson",
+            "max_hp": 450,
+            "current_hp": 450,
+            "level": 6,
+            "item": {
+                "type": "staff",
+                "name": "Demonic Python Staff",
+                "rarity": 7
+            }
+        }
+
+        super().__init__(thompson)
+
+    def battle(self, character) -> bool:
+        """
+        Print dialog and receive decisions for choosing whether to start the final boss battle.
+
+        The character dictionary is modified during execution.
+
+        :param character: a character in dictionary form
+        :precondition: character must be a dictionary in the form of our game character with all proper keys
+        :postcondition: prints dialog and receive decisions for choosing whether to start the final boss battle
+        :postcondition: returns True if character wins the final boss battle, otherwise False
+        :return: True if character wins the final boss battle, otherwise False
+        """
+        Helpers.print_in_color("As you enter into throne room, you see a colossal of a man sitting on the Golden "
+                               "throne.\n"
+                               "He must be the king, the man who stole the light and betrayed the very gods itself.\n",
+                               "cyan")
+        Helpers.print_in_color("You approach the golden throne\n", "cyan")
+
+        if character.get_level() <= 3:  # max level is three?
+            Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
+                                   f"before "
+                                   f"you make your decision\n", "red")
+
+        options = list(enumerate(["Fight", "Flee"], start=1))
+        Helpers.print_user_options(options, "Choice")
+
+        decision = Helpers.get_user_choice(options, True)
+
+        if int(decision) == 1:
+            Helpers.print_in_color("The King acknowledge you, and readies his Warhammer: \n", "cyan")
+            print("You have done well, mortal. It is commendable. However, as the God King of Alyndelle,"
+                  "I cannot allow your transgression no longer.\nYour treachery will end here, I will not "
+                  "allow the Flame of Humanity to be restored. This is the sacrifice your kind must make "
+                  "for my victory.")
 
             return super().fight(character)
         else:
