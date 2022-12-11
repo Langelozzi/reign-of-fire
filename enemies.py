@@ -139,3 +139,127 @@ class Enemy:
             print("I should have guessed. You do seem like a cowardly creature. I will be here if you wish "
                   "to return with a bit more courage..")
             return False
+
+
+class RoyalMageAngelozzi(Enemy):
+    def __init__(self):
+        angelozzi = {
+            "name": "Royal Battle-Mage Angelozzi",
+            "max_hp": 250,
+            "current_hp": 250,
+            "level": 7,
+            "item": {
+                "type": "staff",
+                "name": "Angelozzi's Ill-Omen",
+                "rarity": 5
+            }
+        }
+
+        super().__init__(angelozzi)
+
+    def battle(self, character) -> bool:
+        """
+        Print dialog and receive decisions for choosing whether to start the mini boss battle.
+
+        The character dictionary is modified during execution.
+
+        :param character: a character in dictionary form
+        :precondition: character must be a dictionary in the form of our game character with all proper keys
+        :postcondition: prints dialog and receive decisions for choosing whether to start the mini boss battle
+        :postcondition: returns True if character wins the mini boss battle, otherwise False
+        :return: True if character wins the mini boss battle, otherwise False
+        """
+        Helpers.print_in_color("As you exit the narrow collider, you arrive at a grand opening to what seems like a "
+                               "giant "
+                               "underground cave...You notice a cathedral in the distance.\n\n"
+                               "'How can someone build something so magnificent underground,' you thought.\n", "cyan")
+        Helpers.print_in_color("As you stand there in awe, you notice a huge knight clad in royal armour towering over "
+                               "the "
+                               "cathedral entrance.\n", "cyan")
+        Helpers.print_in_color(f"You approach the giant knight to observe them better.\n", "cyan")
+
+        if character.get_level() <= 3:
+            Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
+                                   f"before "
+                                   f"you make your decision\n", "red")
+
+        options = list(enumerate(["Fight", "Flee"], start=1))
+
+        Helpers.print_user_options(options, "Choice")
+
+        decision = Helpers.get_user_choice(options, True)
+
+        if int(decision) == 1:
+            Helpers.print_in_color(f"The battle mage notices you, he readies his staff: \n", "cyan")
+            print("You wretched createre, how dare you stain this sacred haven with your miserable existence.\n"
+                  "Instead of fulfilling your duty as one of the royal knights, you chose to betray our King.\n"
+                  "I do not know how you escaped your cell, but on my honour as the Left wing of Alyndelle, "
+                  "the guardian of this empire, I must stop you.\n")
+
+            return super().fight(character)
+        else:
+            Helpers.print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
+            return False
+
+
+class LordCommanderYmir(Enemy):
+    def __init__(self):
+        ymir = {
+            "name": "Lord-Commander Ymir",
+            "max_hp": 400,
+            "current_hp": 400,
+            "level": 5,
+            "item": {
+                "type": "armour",
+                "name": "Ymir's Royal Armour",
+                "rarity": 5
+            }
+        }
+
+        super().__init__(ymir)
+
+    def battle(self, character) -> bool:
+        """
+        Print dialog and receive decisions for choosing whether to start the mini boss battle.
+
+        The character dictionary is modified during execution.
+
+        :param character: a character in dictionary form
+        :precondition: character must be a dictionary in the form of our game character with all proper keys
+        :postcondition: prints dialog and receive decisions for choosing whether to start the mini boss battle
+        :postcondition: returns True if character wins the mini boss battle, otherwise False
+        :return: True if character wins the mini boss battle, otherwise False
+        """
+        Helpers.print_in_color("You reach closer to the throne room, and arrive at a grand hall supported by marble "
+                               "pillars \n"
+                               "and the statues depict the past heroes and kings of Alyndelle.\n",
+                               "cyan")
+        Helpers.print_in_color("***CRASH***.\n"
+                               "There's dust and smoke everywhere!\n"
+                               "*cough cough*\n"
+                               "You see a huge figure appear as the dust settles.", "cyan")
+        Helpers.print_in_color("He is clad in ornate armor; those scratches and gouges on his armor proving the "
+                               "warrior's "
+                               "skill.\n", "cyan")
+
+        if character.get_level() <= 3:
+            Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
+                                   f"before "
+                                   f"you make your decision\n", "red")
+
+        options = list(enumerate(["Fight", "Flee"], start=1))
+
+        Helpers.print_user_options(options, "Choice")
+
+        decision = Helpers.get_user_choice(options, True)
+
+        if int(decision) == 1:
+            Helpers.print_in_color(f"The giant knight notices you, and he readies his greatsword: \n", "cyan")
+            print("I commend you for making this far, but, your luck ends here, mortal.\n"
+                  "On my honour as the Right wing of Alyndelle, the guardian of this empire,\n"
+                  "and as the Lord-Commander, I must stop you.\n")
+
+            return super().fight(character)
+        else:
+            Helpers.print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
+            return False
