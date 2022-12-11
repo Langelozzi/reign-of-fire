@@ -9,54 +9,7 @@ import json
 from character import Character
 from helpers import Helpers
 from riddle import Riddle
-
-
-# Spider Web -----------------------------------------------------------------------------------------------------------
-def spider_web_blockade(character: Character) -> None:
-    """
-    Print the spider web blockade room dialog and interactions.
-
-    :param character: a character in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with all proper keys
-    :postcondition: prints the spider web blockage room description dialog and interactions
-    """
-    Helpers.print_in_color("You pause once in the room. You see that all of the archways are blocked off with layers "
-                           "upon \n"
-                           "layers of spider webs. You need some way to clear the archways before you can proceed.",
-                           "cyan")
-    Helpers.print_in_color("You might be able to use one of your abilities to clear the webs!\n", "cyan")
-
-    ability_options = list(enumerate(character.get_abilities(), start=1))
-    Helpers.print_user_options(ability_options, "Ability")
-
-    ability_used = Helpers.get_user_choice(ability_options)
-    while ability_used != "Fireball":
-        Helpers.print_in_color(f"\nI don't think {ability_used} will work here, try a different one.", "red")
-        ability_used = Helpers.get_user_choice(ability_options)
-
-    Helpers.print_in_color("\n\nNice work! You were able to clear out all of those webs with your Fireball!", "cyan")
-
-    if character.get_level() < 3:
-        new_xp = character.get_xp() + 12
-        character.set_xp(new_xp)
-
-        Helpers.print_in_color(f"\n[{character.get_name()} | xp: +12]", "yellow")
-
-
-def empty_room(character: Character) -> bool:
-    """
-    Print the empty room dialog with the character name.
-
-    :param character: a character in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with at least the "name" key
-    :postcondition: prints the empty room dialog with the character name
-    """
-    Helpers.print_in_color("You stop in the center of the room. It appears empty, but you hear a voice whispering..",
-                           "cyan")
-    Helpers.print_in_color(f"{character.get_name()}, keep walking if you know what's good for you!", "cyan")
-    Helpers.print_in_color("You hastily make your decision..", "cyan")
-
-    return True
+from generic_rooms import GenericRooms
 
 
 # Default Battles ------------------------------------------------------------------------------------------------------
@@ -390,157 +343,6 @@ def god_king_thompson():
     return thompson_battle
 
 
-# Generate Riddles -----------------------------------------------------------------------------------------------------
-def generate_riddle(riddle_data: dict):
-    """
-    Generate and return a riddle function with the specific riddle_data.
-
-    :postcondition: generates and returns a riddle function with the specific riddle_data
-    :return: a riddle function with the specific riddle_data
-    """
-
-    def riddle_success(character: Character) -> None:
-        """
-        Print dialog and accept input for decisions after correctly answering a riddle.
-
-        The character dictionary is modified during execution.
-
-        :param character: a character in dictionary form
-        :precondition: character must be a dictionary in the form of our game character with all proper keys
-        :postcondition: prints dialog and accepts input for decisions after correctly answering a riddle
-        """
-        Helpers.print_in_color(f"\n\nCongratulations {character.get_name()}, you are not as dumb as I thought for a "
-                               f"creature "
-                               f"such "
-                               f"as yourself.", "green")
-
-        if character.get_level() < 3:
-            updated_xp = round(character.get_xp() + 15)
-            character.set_xp(updated_xp)
-
-            Helpers.print_in_color(f"\n[{character.get_name()} | xp: +15]", "yellow")
-
-        Helpers.print_in_color(f"\n\nTo reward your success, I give you two options: try your luck at possibly "
-                               f"earning a "
-                               f"new ability, or accept the gift of maximum health", "green")
-
-        success_options = list(enumerate(["Try my luck at a new ability", "Refill HP to max"], start=1))
-
-        Helpers.print_user_options(success_options, "Choice")
-
-        user_choice = Helpers.get_user_choice(success_options, True)
-
-        if int(user_choice) == 1:
-            new_ability = riddle_data["ability"]
-            if (
-                    new_ability is not None and
-                    new_ability not in character.get_abilities()
-            ):
-                character.add_ability(new_ability)
-                print(f"\nYou got lucky! I am feeling generous and will grant you a new ability. You can now use "
-                      f"{new_ability}")
-                Helpers.print_in_color(f"\n[{character.get_name()} | abilities: +'{new_ability}']", "yellow")
-            else:
-                print("\nOh no, looks like you lost the coin flip, you will not be getting a new ability.")
-        else:
-            difference = character.get_max_hp() - character.get_current_hp()
-            character.set_current_hp(character.get_max_hp())
-            Helpers.print_in_color(f"\n[{character.get_name()} | hp: +{difference}]", "yellow")
-
-    def riddle(character: Character) -> bool:
-        """
-        Print dialog and accept input for answering a riddle.
-
-        The character dictionary is modified during execution.
-
-        :param character: a character in dictionary form
-        :precondition: character must be a dictionary in the form of our game character with all proper keys
-        :postcondition: prints dialog and accepts input for answering a riddle
-        """
-        Helpers.print_in_color("As you enter a dark, candle-lit room; you notice a mysterious potion placed by your "
-                               "feet.\n"
-                               "You picked it up out of curiosity, but it started to shake violently.", "cyan")
-        Helpers.print_in_color("***POOF***", "cyan")
-        Helpers.print_in_color("Through the thick purple smoke, a Phantom Imp appears, with unnaturally wide smile, \n"
-                               "and in a high-pitch crackle, speaks:", "cyan")
-        time.sleep(3)
-
-        Helpers.print_in_color(r"""
-                        _.----._     _.---.
-                     .-'        `-.-'      `.
-                   .'                 .:''':.`.
-                 .'        .:'''':. .' .----.  `.
-             .-./        .' .----.    /  .-. \   `.
-            /.-.           /  .-. \   \ ' O ' |    \
-            ||        `.   | ' O '/    \ `-' /     |
-            || (        \   \ `-'/      `-.__     / `.
-             \`-'        )   .-'  --         )        `.
-              `-'     _.'   (            _.-'    _/\    \
-                 `.       /\_ `-.____..-'     .-' _/    /
-                   `.     \_ `-._         _.-'_.-'   .' 
-                     `--.._ `-._ `-.__..-'_.-'     .' 
-                   .-'     `-._ `--.__..-'  _.----'`. 
-                  /            `---.......-' _     \ \ 
-                 /                          ( `-._.-` )
-                /  /     _                  .-    _.-' 
-               (  `-._.-' )                (_   .'    \ 
-                `-._      -.               (_.-'       |
-                    `.     _)                   __..---'
-                   |  `-._) ''...__ .-. __...'''__..---'
-                    \      '''...__((=))__...'''      /
-                     |              `-'             .'
-                     \                             /
-                      |                           |
-                      \     \    \      /    /   /
-                       `. \               /     /
-                         `.    \   \   /   /   /
-                           `--.._   ` '  _.--'
-                                  [====]
-                                   )  (
-                                .-'    '-.
-                               |          |
-                               | .------. |
-                               | | LGBT | |
-                               | '------' |
-                               |          |
-                               '----------'
-                               """, "green")
-
-        print(f"Oh {character.get_name()}, you foolish creature, how dare you interrupt my slumber. For your "
-              f"transgression you must prove your intellect to me with a riddle if you want me to spare your life..\n")
-        time.sleep(1)
-        Helpers.print_in_color(riddle_data["question"], "purple")
-
-        options = list(enumerate(riddle_data["options"], start=1))
-
-        Helpers.print_user_options(options, "Response")
-
-        Helpers.print_in_color("\nYou have one chance to guess the answer or you will be punished.\nPlease choose the "
-                               "correct "
-                               "answer to this riddle..", "purple")
-
-        user_answer = Helpers.get_user_choice(options)
-
-        if user_answer == riddle_data["answer"]:
-            riddle_success(character)
-            return True
-        else:
-            Helpers.print_in_color(f"\n{character.get_name()}, I knew a creature such as yourself was not "
-                                   f"intellectually gifted. That answer is far from correct and for that you must be "
-                                   f"punished!", "red")
-
-            lost_hp = character.get_current_hp() * 0.25
-            updated_hp = round(character.get_current_hp() - lost_hp)
-
-            character.set_current_hp(updated_hp)
-
-            Helpers.print_in_color(f"\n[{character.get_name()} | hp: -{lost_hp}]", "yellow")
-
-            return False
-
-    return riddle
-
-
 def create_batch_of_enemy_battles(amount: int) -> list:
     """
     Read a list of json data and generate a list of length amount, containing battle functions generated from json data.
@@ -652,10 +454,10 @@ def get_generic_actions() -> list:
     actions += (riddles + riddles[:11])
 
     # 13 spider web rooms
-    actions += list(itertools.repeat(spider_web_blockade, 13))
+    actions += list(itertools.repeat(GenericRooms.spider_web_blockade, 13))
 
     # 12 empty rooms
-    actions += list(itertools.repeat(empty_room, 12))
+    actions += list(itertools.repeat(GenericRooms.empty_room, 12))
 
     random.shuffle(actions)
 
