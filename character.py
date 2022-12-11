@@ -19,7 +19,7 @@ class Character:
 
         self.__name = name
         self.__position = (1, 1)
-        self.__max_hp = 100,
+        self.__max_hp = 100
         self.__current_hp = 100
         self.__xp = 0
         self.__damage = 20
@@ -40,13 +40,21 @@ class Character:
     def get_current_hp(self):
         return self.__current_hp
 
+    def set_current_hp(self, hp: int):
+        if type(hp) is not int:
+            raise TypeError('hp must be an integer')
+        if (hp < 0) or (hp > self.__max_hp):
+            raise ValueError('hp must be between 0 and 60 inclusive')
+
+        self.__current_hp = hp
+
     def get_xp(self):
         return self.__xp
 
     def set_xp(self, xp: int):
         if type(xp) is not int:
             raise TypeError('xp must be an integer')
-        if xp < 0 or xp > 60:
+        if (xp < 0) or (xp > 60):
             raise ValueError('xp must be between 0 and 60 inclusive')
 
         self.__xp = xp
@@ -63,8 +71,23 @@ class Character:
     def get_staff(self):
         return self.__staff
 
+    def set_staff(self, new_staff: dict):
+        if type(new_staff) is not dict:
+            raise TypeError("Staff must be a dictionary")
+
+        self.__staff = new_staff
+
     def get_armour(self):
         return self.__armour
+
+    def set_armour(self, new_armour: dict):
+        if type(new_armour) is not dict:
+            raise TypeError("Armour must be a dictionary")
+
+        self.__staff = new_armour
+
+    def add_ability(self, new_ability: str) -> None:
+        self.__abilities.append(new_ability)
 
     def show_stats(self) -> None:
         """
