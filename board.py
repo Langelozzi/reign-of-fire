@@ -4,8 +4,8 @@ Module containing the Board class.
 import itertools
 
 from helpers import Helpers
-from actions import get_generic_actions, get_generic_room_description, \
-    royal_mage_angelozzi, lord_commander_ymir, god_king_thompson
+from actions import ActionGenerator
+from enemies import RoyalMageAngelozzi, LordCommanderYmir, GodKingThompson
 
 
 class Board:
@@ -33,6 +33,10 @@ class Board:
         self.boss_1_coords = boss_1_coords # (4, 4)
         self.boss_2_coords = boss_2_coords # (7, 7)
 
+        self.boss_1 = RoyalMageAngelozzi()
+        self.boss_2 = LordCommanderYmir()
+        self.final_boss = GodKingThompson()
+
         self.board = {
             (1, 1): {
                 "description": "\nLooks like you have come back to the start, try the opposite direction of the cell",
@@ -47,7 +51,7 @@ class Board:
             },
             self.boss_1_coords: {
                 "description": "\nRoyal Mage Angelozzi, Left Wing of Alyndelle",
-                "action": royal_mage_angelozzi(),
+                "action": self.boss_1.battle,
                 "solved": False,
                 "directions": {
                     "north": (4, 5),
@@ -58,7 +62,7 @@ class Board:
             },
             self.boss_2_coords: {
                 "description": "\nLord-Commander Ymir, Right Wing of Alyndelle",
-                "action": lord_commander_ymir(),
+                "action": self.boss_2.battle,
                 "solved": False,
                 "directions": {
                     "north": (7, 8),
@@ -69,7 +73,7 @@ class Board:
             },
             (10, 11): {
                 "description": "\nGod-King Thompson, the God Slayer",
-                "action": god_king_thompson(),
+                "action": self.final_boss.battle,
                 "solved": False,
                 "directions": {
                     "north": None,
@@ -80,7 +84,7 @@ class Board:
             }
         }
 
-        actions = itertools.cycle(get_generic_actions())
+        actions = itertools.cycle(ActionGenerator.get_generic_actions())
 
         for x_coord in range(1, self.columns + 1):
             for y_coord in range(1, self.rows + 1):
@@ -91,7 +95,7 @@ class Board:
                     continue
 
                 self.board[(x_coord, y_coord)] = {
-                    "description": get_generic_room_description(),
+                    "description": ActionGenerator.get_generic_room_description(),
                     "action": next(actions),
                     "solved": False,
                     "directions": {
@@ -200,7 +204,7 @@ class Board:
                         True; else False
         :return: True if a value tied to the 'solved' key in board[(10,11)] is True; else False
 
-        >>> test_board = { (10, 11): {"description": "God-King Thompson, the God Slayer", "action": god_king_thompson(), "solved": False, "directions": {"north": None, "east": None, "south": (10, 10), "west": None} } }
+        >>> test_board = { (10, 11): {"description": "God-King Thompson, the God Slayer", "action": self.final_boss.battle(), "solved": False, "directions": {"north": None, "east": None, "south": (10, 10), "west": None} } }
         >>> self.boss_defeated(test_board)
         False
         """
