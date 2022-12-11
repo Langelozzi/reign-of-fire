@@ -112,43 +112,30 @@ class Character:
 
         return get_user_choice(options)
 
+    def move_character(self, direction: str, board: dict) -> None:
+        """
+        Modify the character position accordingly based on the direction. Original character is modified, board is not.
 
-def move_character(direction: str, board: dict, character: dict) -> None:
-    """
-    Modify the character coordinates accordingly based on the direction. Original character is modified, board is not.
+        :param direction: one of the following strings in lowercase: "north", "east", "south", "west"
+        :param board: a dictionary in the form of our game board with all proper keys
+        :precondition: direction must be one of the following strings in lowercase: "north", "east", "south", "west"
+        :precondition: board must be a dictionary in the form of our game board
+        :postcondition: changes the character position according to the direction they moved
+        """
+        current_room = board[self.__position]
+        self.__position = current_room["directions"][direction]
 
-    :param direction: one of the following strings in lowercase: "north", "east", "south", "west"
-    :param board: a dictionary in the form of our game board with all proper keys
-    :param character: a dictionary in the form of our game character with at least the key "position"
-    :precondition: direction must be one of the following strings in lowercase: "north", "east", "south", "west"
-    :precondition: board must be a dictionary in the form of our game board
-    :precondition: character must be a dictionary in the form of our game character with at least the key "position"
-    :postcondition: changes the character position according to the direction they moved
-    """
-    current_room = board[character["position"]]
-    character["position"] = current_room["directions"][direction]
+    def is_alive(self) -> bool:
+        """
+        Determine if the character is still alive or not. Does not modify the character dictionary.
 
-
-def is_alive(character: dict) -> bool:
-    """
-    Determine if the character is still alive or not. Does not modify the character dictionary.
-
-    :param character: a character in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with at least the key "current_hp"
-    :postcondition: Returns True if character is alive, False otherwise
-    :return: True if character is alive, False otherwise
-
-    >>> character1 = {"current_hp": 1}
-    >>> is_alive(character1)
-    True
-    >>> character2 = {"current_hp": 0}
-    >>> is_alive(character2)
-    False
-    """
-    if character["current_hp"] <= 0:
-        return False
-    else:
-        return True
+        :postcondition: Returns True if character is alive, False otherwise
+        :return: True if character is alive, False otherwise
+        """
+        if self.__current_hp <= 0:
+            return False
+        else:
+            return True
 
 
 def leveled_up(character: dict) -> bool:
