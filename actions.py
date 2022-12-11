@@ -6,7 +6,7 @@ import random
 import time
 import json
 
-from helpers import print_in_color, print_user_options, get_user_choice
+from helpers import Helpers
 
 
 # Game Opening ---------------------------------------------------------------------------------------------------------
@@ -28,15 +28,15 @@ def opening_dialogue() -> None:
                     "God King Thompson finally slayed the Gods but to do so he took the flame of humanity, casting \n" \
                     "the rest humanity into darkness...\n"
 
-    print_in_color("...\n", "cyan")
+    Helpers.print_in_color("...\n", "cyan")
     time.sleep(1)
-    print_in_color(opening_one, "cyan")
+    Helpers.print_in_color(opening_one, "cyan")
     time.sleep(1)
-    print_in_color(opening_two, "cyan")
+    Helpers.print_in_color(opening_two, "cyan")
     time.sleep(1)
-    print_in_color(opening_three, "cyan")
+    Helpers.print_in_color(opening_three, "cyan")
     time.sleep(3)
-    print_in_color(r"""
+    Helpers.print_in_color(r"""
                                                                                                     
                                                       %#&&%%#*                                      
                                                  #(#(&##&                                           
@@ -93,7 +93,7 @@ def opening_dialogue() -> None:
                                                                      @%%###/                        
                                                                         /                          
     """, "cyan")
-    print_in_color(r"""
+    Helpers.print_in_color(r"""
          _______  _______ _________ _______  _          _______  _______    _______ _________ _______  _______  
         (  ____ )(  ____ \\__   __/(  ____ \( (    /|  (  ___  )(  ____ \  (  ____ \\__   __/(  ____ )(  ____  \
         | (    )|| (    \/   ) (   | (    \/|  \  ( |  | (   ) || (    \/  | (    \/   ) (   | (    )|| (    \/ 
@@ -148,22 +148,22 @@ def cell_description() -> None:
                "- To fight the final boss, you need to beat both the sub-bosses first.\n" \
                "- We recommend to be at least level 2 and equipped with items before attemping the sub-bosses.\n" \
                "- Dying sets you back so be mindful of your HP, there are ways to heal in this game.\n" \
-               "- Even though some monsters are higher level than you, there is a chance to beat them!\n"\
+               "- Even though some monsters are higher level than you, there is a chance to beat them!\n" \
                "- Have fun!\n\n"
 
-    print_in_color("**CLANK**\n", "cyan")
+    Helpers.print_in_color("**CLANK**\n", "cyan")
     time.sleep(1)
-    print_in_color(part_one, "cyan")
+    Helpers.print_in_color(part_one, "cyan")
     time.sleep(1)
-    print_in_color(part_two, "cyan")
+    Helpers.print_in_color(part_two, "cyan")
     time.sleep(1)
-    print_in_color(part_three, "cyan")
+    Helpers.print_in_color(part_three, "cyan")
     time.sleep(1)
-    print_in_color(part_four, "cyan")
+    Helpers.print_in_color(part_four, "cyan")
     time.sleep(1)
-    print_in_color(part_five, "cyan")
+    Helpers.print_in_color(part_five, "cyan")
     time.sleep(1)
-    print_in_color(part_six, "purple")
+    Helpers.print_in_color(part_six, "purple")
     time.sleep(1)
 
 
@@ -176,23 +176,25 @@ def spider_web_blockade(character: dict) -> None:
     :precondition: character must be a dictionary in the form of our game character with all proper keys
     :postcondition: prints the spider web blockage room description dialog and interactions
     """
-    print_in_color("You pause once in the room. You see that all of the archways are blocked off with layers upon \n"
-                   "layers of spider webs. You need some way to clear the archways before you can proceed.", "cyan")
-    print_in_color("You might be able to use one of your abilities to clear the webs!\n", "cyan")
+    Helpers.print_in_color("You pause once in the room. You see that all of the archways are blocked off with layers "
+                           "upon \n"
+                           "layers of spider webs. You need some way to clear the archways before you can proceed.",
+                           "cyan")
+    Helpers.print_in_color("You might be able to use one of your abilities to clear the webs!\n", "cyan")
 
     ability_options = list(enumerate(character["abilities"], start=1))
-    print_user_options(ability_options, "Ability")
+    Helpers.print_user_options(ability_options, "Ability")
 
-    ability_used = get_user_choice(ability_options)
+    ability_used = Helpers.get_user_choice(ability_options)
     while ability_used != "Fireball":
-        print_in_color(f"\nI don't think {ability_used} will work here, try a different one.", "red")
-        ability_used = get_user_choice(ability_options)
+        Helpers.print_in_color(f"\nI don't think {ability_used} will work here, try a different one.", "red")
+        ability_used = Helpers.get_user_choice(ability_options)
 
-    print_in_color("\n\nNice work! You were able to clear out all of those webs with your Fireball!", "cyan")
+    Helpers.print_in_color("\n\nNice work! You were able to clear out all of those webs with your Fireball!", "cyan")
 
     if character["level"] < 3:
         character["xp"] += 12
-        print_in_color(f"\n[{character['name']} | xp: +12]", "yellow")
+        Helpers.print_in_color(f"\n[{character['name']} | xp: +12]", "yellow")
 
 
 def empty_room(character: dict) -> bool:
@@ -203,9 +205,10 @@ def empty_room(character: dict) -> bool:
     :precondition: character must be a dictionary in the form of our game character with at least the "name" key
     :postcondition: prints the empty room dialog with the character name
     """
-    print_in_color("You stop in the center of the room. It appears empty, but you hear a voice whispering..", "cyan")
-    print_in_color(f"{character['name']}, keep walking if you know what's good for you!", "cyan")
-    print_in_color("You hastily make your decision..", "cyan")
+    Helpers.print_in_color("You stop in the center of the room. It appears empty, but you hear a voice whispering..",
+                           "cyan")
+    Helpers.print_in_color(f"{character['name']}, keep walking if you know what's good for you!", "cyan")
+    Helpers.print_in_color("You hastily make your decision..", "cyan")
 
     return True
 
@@ -225,15 +228,15 @@ def fight(character: dict, enemy: dict) -> bool:
     :postcondition: returns True if character wins the fight, otherwise False
     :return: True if character wins the fight, otherwise False
     """
-    print_in_color(f"\nBoth you and the {enemy['name']} step forward, and prepare for a battle..\n", "cyan")
+    Helpers.print_in_color(f"\nBoth you and the {enemy['name']} step forward, and prepare for a battle..\n", "cyan")
 
     while (character["current_hp"] > 0) and (enemy["current_hp"] > 0):
         ability_options = list(enumerate(character["abilities"], start=1))
-        print_user_options(ability_options, "Ability")
+        Helpers.print_user_options(ability_options, "Ability")
 
-        chosen_ability = get_user_choice(ability_options)
+        chosen_ability = Helpers.get_user_choice(ability_options)
 
-        print_in_color(f"\nYour {chosen_ability} hits the {enemy['name']}", "cyan")
+        Helpers.print_in_color(f"\nYour {chosen_ability} hits the {enemy['name']}", "cyan")
         # enemy health will decrease by character damage * character level * (1 + (0.1 * staff rarity))
         try:
             damage_given = character["damage"] * character["level"] * (1 + (0.2 * character["staff"]["rarity"]))
@@ -241,16 +244,17 @@ def fight(character: dict, enemy: dict) -> bool:
             damage_given = character["damage"] * character["level"]
         enemy["current_hp"] -= round(damage_given)
 
-        print_in_color(f"But the {enemy['name']}'s attack lands successfully as well", "cyan")
+        Helpers.print_in_color(f"But the {enemy['name']}'s attack lands successfully as well", "cyan")
         # character health with decrease by 10 * (1 + (0.2 * enemy level))
         damage_taken = 10 * (1 + (0.2 * enemy["level"]))
         character["current_hp"] -= round(damage_taken)
 
-        print_in_color(f"\n[{character['name']} | hp: {character['current_hp']}/{character['max_hp']}]", "yellow")
+        Helpers.print_in_color(f"\n[{character['name']} | hp: {character['current_hp']}/{character['max_hp']}]",
+                               "yellow")
         print(f"[{enemy['name']} | hp: {enemy['current_hp']}/{enemy['max_hp']}]")
 
     if (enemy["current_hp"] <= 0) and (character["current_hp"] > 0):
-        print_in_color(f"\n\nCongratulations! You have defeated the {enemy['name']}", "cyan")
+        Helpers.print_in_color(f"\n\nCongratulations! You have defeated the {enemy['name']}", "cyan")
 
         if enemy["level"] > character["level"]:
             earned_xp = 15 * ((enemy["level"] - character["level"]) + 1)
@@ -259,7 +263,7 @@ def fight(character: dict, enemy: dict) -> bool:
 
         if character["level"] < 3:
             character["xp"] += earned_xp
-            print_in_color(f"\n[{character['name']} | xp: +{earned_xp}]", "yellow")
+            Helpers.print_in_color(f"\n[{character['name']} | xp: +{earned_xp}]", "yellow")
 
         enemy_item = enemy["item"]
         try:
@@ -272,7 +276,8 @@ def fight(character: dict, enemy: dict) -> bool:
             character[enemy["item"]["type"]] = {
                 key: value for key, value in enemy['item'].items() if key != 'type'
             }
-            print_in_color(f"[{character['name']} | {enemy['item']['type']}: +{enemy['item']['name']}]\n", "yellow")
+            Helpers.print_in_color(f"[{character['name']} | {enemy['item']['type']}: +{enemy['item']['name']}]\n",
+                                   "yellow")
 
         enemy["current_hp"] = enemy["max_hp"]
         return True
@@ -290,9 +295,9 @@ def fight_decision() -> str:
     """
     options = list(enumerate(["Fight", "Flee"], start=1))
 
-    print_user_options(options, "Choice")
+    Helpers.print_user_options(options, "Choice")
 
-    return get_user_choice(options, True)
+    return Helpers.get_user_choice(options, True)
 
 
 def generate_enemy_battle(enemy: dict):
@@ -304,6 +309,7 @@ def generate_enemy_battle(enemy: dict):
     :postcondition: generates a function with the specific enemy data
     :return: an enemy battle function with the specific enemy data
     """
+
     def enemy_battle(character: dict) -> bool:
         """
         Print dialog and receive decisions for choosing whether to start an enemy battle.
@@ -316,18 +322,19 @@ def generate_enemy_battle(enemy: dict):
         :postcondition: returns True if character wins the enemy battle, otherwise False
         :return: True if character wins the enemy battle, otherwise False
         """
-        print_in_color(f"Out of the corner of your eye you see a {enemy['name']} appear!\n", "cyan")
+        Helpers.print_in_color(f"Out of the corner of your eye you see a {enemy['name']} appear!\n", "cyan")
 
         if character["level"] < enemy["level"]:
-            print_in_color(f"This enemies level is greater than yours, you might want to weigh your options before "
-                           f"you make your decision\n", "red")
+            Helpers.print_in_color(f"This enemies level is greater than yours, you might want to weigh your options "
+                                   f"before "
+                                   f"you make your decision\n", "red")
 
         decision = fight_decision()
 
         if int(decision) == 1:
             return fight(character, enemy)
         else:
-            print_in_color(f"\nAs you turn to flee the {enemy['name']} says:", "cyan")
+            Helpers.print_in_color(f"\nAs you turn to flee the {enemy['name']} says:", "cyan")
             print("I should have guessed. You do seem like a cowardly creature. I will be here if you wish "
                   "to return with a bit more courage..")
             return False
@@ -344,16 +351,16 @@ def lord_commander_ymir():
     :return: the ymir mini boss battle function
     """
     ymir = {
-                "name": "Lord-Commander Ymir",
-                "max_hp": 400,
-                "current_hp": 400,
-                "level": 5,
-                "item": {
-                    "type": "armour",
-                    "name": "Ymir's Royal Armour",
-                    "rarity": 5
-                    }
-                }
+        "name": "Lord-Commander Ymir",
+        "max_hp": 400,
+        "current_hp": 400,
+        "level": 5,
+        "item": {
+            "type": "armour",
+            "name": "Ymir's Royal Armour",
+            "rarity": 5
+        }
+    }
 
     def ymir_battle(character: dict) -> bool:
         """
@@ -367,31 +374,34 @@ def lord_commander_ymir():
         :postcondition: returns True if character wins the mini boss battle, otherwise False
         :return: True if character wins the mini boss battle, otherwise False
         """
-        print_in_color("You reach closer to the throne room, and arrive at a grand hall supported by marble pillars \n"
-                       "and the statues depict the past heroes and kings of Alyndelle.\n",
-                       "cyan")
-        print_in_color("***CRASH***.\n"
-                       "There's dust and smoke everywhere!\n"
-                       "*cough cough*\n"
-                       "You see a huge figure appear as the dust settles.", "cyan")
-        print_in_color("He is clad in ornate armor; those scratches and gouges on his armor proving the warrior's "
-                       "skill.\n", "cyan")
+        Helpers.print_in_color("You reach closer to the throne room, and arrive at a grand hall supported by marble "
+                               "pillars \n"
+                               "and the statues depict the past heroes and kings of Alyndelle.\n",
+                               "cyan")
+        Helpers.print_in_color("***CRASH***.\n"
+                               "There's dust and smoke everywhere!\n"
+                               "*cough cough*\n"
+                               "You see a huge figure appear as the dust settles.", "cyan")
+        Helpers.print_in_color("He is clad in ornate armor; those scratches and gouges on his armor proving the "
+                               "warrior's "
+                               "skill.\n", "cyan")
 
         if character["level"] <= 3:
-            print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options before "
-                           f"you make your decision\n", "red")
+            Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
+                                   f"before "
+                                   f"you make your decision\n", "red")
 
         decision = fight_decision()
 
         if int(decision) == 1:
-            print_in_color(f"The giant knight notices you, and he readies his greatsword: \n", "cyan")
+            Helpers.print_in_color(f"The giant knight notices you, and he readies his greatsword: \n", "cyan")
             print("I commend you for making this far, but, your luck ends here, mortal.\n"
                   "On my honour as the Right wing of Alyndelle, the guardian of this empire,\n"
                   "and as the Lord-Commander, I must stop you.\n")
 
             return fight(character, ymir)
         else:
-            print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
+            Helpers.print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
             return False
 
     return ymir_battle
@@ -406,16 +416,16 @@ def royal_mage_angelozzi():
     :return: the angelozzi mini boss battle function
     """
     angelozzi = {
-                "name": "Royal Battle-Mage Angelozzi",
-                "max_hp": 250,
-                "current_hp": 250,
-                "level": 7,
-                "item": {
-                    "type": "staff",
-                    "name": "Angelozzi's Ill-Omen",
-                    "rarity": 5
-                    }
-                }
+        "name": "Royal Battle-Mage Angelozzi",
+        "max_hp": 250,
+        "current_hp": 250,
+        "level": 7,
+        "item": {
+            "type": "staff",
+            "name": "Angelozzi's Ill-Omen",
+            "rarity": 5
+        }
+    }
 
     def angelozzi_battle(character: dict) -> bool:
         """
@@ -429,21 +439,24 @@ def royal_mage_angelozzi():
         :postcondition: returns True if character wins the mini boss battle, otherwise False
         :return: True if character wins the mini boss battle, otherwise False
         """
-        print_in_color("As you exit the narrow collider, you arrive at a grand opening to what seems like a giant "
-                       "underground cave...You notice a cathedral in the distance.\n\n"
-                       "'How can someone build something so magnificent underground,' you thought.\n", "cyan")
-        print_in_color("As you stand there in awe, you notice a huge knight clad in royal armour towering over the "
-                       "cathedral entrance.\n", "cyan")
-        print_in_color(f"You approach the giant knight to observe them better.\n", "cyan")
+        Helpers.print_in_color("As you exit the narrow collider, you arrive at a grand opening to what seems like a "
+                               "giant "
+                               "underground cave...You notice a cathedral in the distance.\n\n"
+                               "'How can someone build something so magnificent underground,' you thought.\n", "cyan")
+        Helpers.print_in_color("As you stand there in awe, you notice a huge knight clad in royal armour towering over "
+                               "the "
+                               "cathedral entrance.\n", "cyan")
+        Helpers.print_in_color(f"You approach the giant knight to observe them better.\n", "cyan")
 
         if character["level"] <= 3:
-            print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options before "
-                           f"you make your decision\n", "red")
+            Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
+                                   f"before "
+                                   f"you make your decision\n", "red")
 
         decision = fight_decision()
 
         if int(decision) == 1:
-            print_in_color(f"The battle mage notices you, he readies his staff: \n", "cyan")
+            Helpers.print_in_color(f"The battle mage notices you, he readies his staff: \n", "cyan")
             print("You wretched createre, how dare you stain this sacred haven with your miserable existence.\n"
                   "Instead of fulfilling your duty as one of the royal knights, you chose to betray our King.\n"
                   "I do not know how you escaped your cell, but on my honour as the Left wing of Alyndelle, "
@@ -451,7 +464,7 @@ def royal_mage_angelozzi():
 
             return fight(character, angelozzi)
         else:
-            print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
+            Helpers.print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
             return False
 
     return angelozzi_battle
@@ -466,16 +479,16 @@ def god_king_thompson():
     :return: the god king thompson final boss battle function
     """
     thompson = {
-                "name": "God-King Thompson",
-                "max_hp": 450,
-                "current_hp": 450,
-                "level": 6,
-                "item": {
-                    "type": "staff",
-                    "name": "Demonic Python Staff",
-                    "rarity": 7
-                    }
-                }
+        "name": "God-King Thompson",
+        "max_hp": 450,
+        "current_hp": 450,
+        "level": 6,
+        "item": {
+            "type": "staff",
+            "name": "Demonic Python Staff",
+            "rarity": 7
+        }
+    }
 
     def thompson_battle(character: dict) -> bool:
         """
@@ -489,19 +502,21 @@ def god_king_thompson():
         :postcondition: returns True if character wins the final boss battle, otherwise False
         :return: True if character wins the final boss battle, otherwise False
         """
-        print_in_color("As you enter into throne room, you see a colossal of a man sitting on the Golden throne.\n"
-                       "He must be the king, the man who stole the light and betrayed the very gods itself.\n",
-                       "cyan")
-        print_in_color("You approach the golden throne\n", "cyan")
+        Helpers.print_in_color("As you enter into throne room, you see a colossal of a man sitting on the Golden "
+                               "throne.\n"
+                               "He must be the king, the man who stole the light and betrayed the very gods itself.\n",
+                               "cyan")
+        Helpers.print_in_color("You approach the golden throne\n", "cyan")
 
         if character["level"] <= 3:  # max level is three?
-            print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options before "
-                           f"you make your decision\n", "red")
+            Helpers.print_in_color(f"\nThis enemies level is greater than yours, you might want to weigh your options "
+                                   f"before "
+                                   f"you make your decision\n", "red")
 
         decision = fight_decision()
 
         if int(decision) == 1:
-            print_in_color("The King acknowledge you, and readies his Warhammer: \n", "cyan")
+            Helpers.print_in_color("The King acknowledge you, and readies his Warhammer: \n", "cyan")
             print("You have done well, mortal. It is commendable. However, as the God King of Alyndelle,"
                   "I cannot allow your transgression no longer.\nYour treachery will end here, I will not "
                   "allow the Flame of Humanity to be restored. This is the sacrifice your kind must make "
@@ -509,7 +524,7 @@ def god_king_thompson():
 
             return fight(character, thompson)
         else:
-            print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
+            Helpers.print_in_color(f"\nYou fled. You should probably get stronger first.", "cyan")
             return False
 
     return thompson_battle
@@ -523,6 +538,7 @@ def generate_riddle(riddle_data: dict):
     :postcondition: generates and returns a riddle function with the specific riddle_data
     :return: a riddle function with the specific riddle_data
     """
+
     def riddle_success(character: dict) -> None:
         """
         Print dialog and accept input for decisions after correctly answering a riddle.
@@ -533,21 +549,24 @@ def generate_riddle(riddle_data: dict):
         :precondition: character must be a dictionary in the form of our game character with all proper keys
         :postcondition: prints dialog and accepts input for decisions after correctly answering a riddle
         """
-        print_in_color(f"\n\nCongratulations {character['name']}, you are not as dumb as I thought for a creature such "
-                       f"as yourself.", "green")
+        Helpers.print_in_color(f"\n\nCongratulations {character['name']}, you are not as dumb as I thought for a "
+                               f"creature "
+                               f"such "
+                               f"as yourself.", "green")
 
         if character["level"] < 3:
             character["xp"] += 15
-            print_in_color(f"\n[{character['name']} | xp: +15]", "yellow")
+            Helpers.print_in_color(f"\n[{character['name']} | xp: +15]", "yellow")
 
-        print_in_color(f"\n\nTo reward your success, I give you two options: try your luck at possibly earning a "
-                       f"new ability, or accept the gift of maximum health", "green")
+        Helpers.print_in_color(f"\n\nTo reward your success, I give you two options: try your luck at possibly "
+                               f"earning a "
+                               f"new ability, or accept the gift of maximum health", "green")
 
         success_options = list(enumerate(["Try my luck at a new ability", "Refill HP to max"], start=1))
 
-        print_user_options(success_options, "Choice")
+        Helpers.print_user_options(success_options, "Choice")
 
-        user_choice = get_user_choice(success_options, True)
+        user_choice = Helpers.get_user_choice(success_options, True)
 
         if int(user_choice) == 1:
             new_ability = riddle_data["ability"]
@@ -558,13 +577,13 @@ def generate_riddle(riddle_data: dict):
                 character["abilities"].append(new_ability)
                 print(f"\nYou got lucky! I am feeling generous and will grant you a new ability. You can now use "
                       f"{new_ability}")
-                print_in_color(f"\n[{character['name']} | abilities: +'{new_ability}']", "yellow")
+                Helpers.print_in_color(f"\n[{character['name']} | abilities: +'{new_ability}']", "yellow")
             else:
                 print("\nOh no, looks like you lost the coin flip, you will not be getting a new ability.")
         else:
             difference = character["max_hp"] - character["current_hp"]
             character["current_hp"] = character["max_hp"]
-            print_in_color(f"\n[{character['name']} | hp: +{difference}]", "yellow")
+            Helpers.print_in_color(f"\n[{character['name']} | hp: +{difference}]", "yellow")
 
     def riddle(character: dict) -> bool:
         """
@@ -576,14 +595,15 @@ def generate_riddle(riddle_data: dict):
         :precondition: character must be a dictionary in the form of our game character with all proper keys
         :postcondition: prints dialog and accepts input for answering a riddle
         """
-        print_in_color("As you enter a dark, candle-lit room; you notice a mysterious potion placed by your feet.\n"
-                       "You picked it up out of curiosity, but it started to shake violently.", "cyan")
-        print_in_color("***POOF***", "cyan")
-        print_in_color("Through the thick purple smoke, a Phantom Imp appears, with unnaturally wide smile, \n"
-                       "and in a high-pitch crackle, speaks:", "cyan")
+        Helpers.print_in_color("As you enter a dark, candle-lit room; you notice a mysterious potion placed by your "
+                               "feet.\n"
+                               "You picked it up out of curiosity, but it started to shake violently.", "cyan")
+        Helpers.print_in_color("***POOF***", "cyan")
+        Helpers.print_in_color("Through the thick purple smoke, a Phantom Imp appears, with unnaturally wide smile, \n"
+                               "and in a high-pitch crackle, speaks:", "cyan")
         time.sleep(3)
 
-        print_in_color(r"""
+        Helpers.print_in_color(r"""
                         _.----._     _.---.
                      .-'        `-.-'      `.
                    .'                 .:''':.`.
@@ -627,26 +647,28 @@ def generate_riddle(riddle_data: dict):
         print(f"Oh {character['name']}, you foolish creature, how dare you interrupt my slumber. For your transgression"
               f" you must prove your intellect to me with a riddle if you want me to spare your life..\n")
         time.sleep(1)
-        print_in_color(riddle_data["question"], "purple")
+        Helpers.print_in_color(riddle_data["question"], "purple")
 
         options = list(enumerate(riddle_data["options"], start=1))
 
-        print_user_options(options, "Response")
+        Helpers.print_user_options(options, "Response")
 
-        print_in_color("\nYou have one chance to guess the answer or you will be punished.\nPlease choose the correct "
-                       "answer to this riddle..", "purple")
+        Helpers.print_in_color("\nYou have one chance to guess the answer or you will be punished.\nPlease choose the "
+                               "correct "
+                               "answer to this riddle..", "purple")
 
-        user_answer = get_user_choice(options)
+        user_answer = Helpers.get_user_choice(options)
 
         if user_answer == riddle_data["answer"]:
             riddle_success(character)
             return True
         else:
-            print_in_color(f"\n{character['name']}, I knew a creature such as yourself was not intellectually gifted. "
-                           f"That answer is far from correct and for that you must be punished!", "red")
+            Helpers.print_in_color(f"\n{character['name']}, I knew a creature such as yourself was not intellectually "
+                                   f"gifted. "
+                                   f"That answer is far from correct and for that you must be punished!", "red")
             lost_hp = character["current_hp"] * 0.25
             character["current_hp"] -= round(lost_hp)
-            print_in_color(f"\n[{character['name']} | hp: -{lost_hp}]", "yellow")
+            Helpers.print_in_color(f"\n[{character['name']} | hp: -{lost_hp}]", "yellow")
             return False
 
     return riddle
@@ -779,17 +801,17 @@ def game_completed() -> None:
     :postcondition: prints final dialogs and ascii art indicating the game is completed
     """
 
-    print_in_color("...\n", "cyan")
+    Helpers.print_in_color("...\n", "cyan")
     time.sleep(1)
     print("H-How is this possible...how can a mortal like you defeat me,")
-    print_in_color("\nThe King collapsed to the ground. You did it, You finally defeated him!\n"
-                   "His body turns into a golden dust as the flame of humanity returned to the golden alter "
-                   "sitting behind the throne.\n", "cyan")
+    Helpers.print_in_color("\nThe King collapsed to the ground. You did it, You finally defeated him!\n"
+                           "His body turns into a golden dust as the flame of humanity returned to the golden alter "
+                           "sitting behind the throne.\n", "cyan")
     time.sleep(1)
-    print_in_color("It's finally over, the flame is finally back to where it should be...\n"
-                   "You collapsed to the ground in exhaustion...this is the start of a new era...\n", "cyan")
+    Helpers.print_in_color("It's finally over, the flame is finally back to where it should be...\n"
+                           "You collapsed to the ground in exhaustion...this is the start of a new era...\n", "cyan")
     time.sleep(3)
-    print_in_color("""
+    Helpers.print_in_color("""
 
                                       _A_
                                      / | \ 

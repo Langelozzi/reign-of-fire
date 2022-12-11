@@ -2,7 +2,7 @@
 Contains functions related to the game characters attributes and state.
 """
 
-from helpers import print_in_color, print_user_options, get_user_choice
+from helpers import Helpers
 
 
 class Character:
@@ -39,7 +39,7 @@ class Character:
         """
         print('+----------------------------------------------------------------------------------+')
         print('|', end="")
-        print_in_color('{:^82}'.format(self.__name), "red", end="")
+        Helpers.print_in_color('{:^82}'.format(self.__name), "red", end="")
         print('|')
         print('+----------------------------------------------------------------------------------+')
 
@@ -55,7 +55,7 @@ class Character:
 
         for title, stat in general_stats:
             print('{:<18}'.format("|"), end="")
-            print_in_color(f"{title:<20}", "blue", end="")
+            Helpers.print_in_color(f"{title:<20}", "blue", end="")
             print("{:<45}".format(f": [ {stat} ]"), end="")
             print('|')
 
@@ -67,11 +67,11 @@ class Character:
         )
         for item, gear in inventory_stats:
             print('{:<18}'.format("|"), end="")
-            print_in_color(f"{item:<20}", "blue", end="")
+            Helpers.print_in_color(f"{item:<20}", "blue", end="")
             try:
                 print('{:<54}'.format(
                     f": [ {gear['name']} (\033[93m{'*' * gear['rarity']}\033[0m) ]"),
-                      end="")
+                    end="")
             except TypeError:
                 print('{:<45}'.format(f": None"), end="")
             print('|')
@@ -79,7 +79,7 @@ class Character:
         print('+----------------------------------------------------------------------------------+')
 
         print('{:<18}'.format("|"), end="")
-        print_in_color("{:<20}".format("Abilities"), "blue", end="")
+        Helpers.print_in_color("{:<20}".format("Abilities"), "blue", end="")
         print("{:<45}".format(f": [ {self.__abilities[0]} ]"), end="")
         print('|')
 
@@ -108,9 +108,9 @@ class Character:
         options = [('q', "quit"), ('s', "show stats")]
         options += list(enumerate(possible_directions, start=1))
 
-        print_user_options(options, "Option")
+        Helpers.print_user_options(options, "Option")
 
-        return get_user_choice(options)
+        return Helpers.get_user_choice(options)
 
     def move(self, direction: str, board) -> None:
         """
@@ -154,7 +154,7 @@ class Character:
         """
         self.__level += 1
         self.__xp = 0
-        print_in_color("""
+        Helpers.print_in_color("""
                               _                              _     _    _           _                                                             
                              | |                            | |   | |  | |         | |                                                            
                              | |        ___  __   __   ___  | |   | |  | |  _ __   | |                                                            
@@ -165,8 +165,8 @@ class Character:
                                                                            |_|                                                                    
                                          \U0001F386 Congrats you leveled up \U0001F386 	                
         """, "yellow")
-        print_in_color("You feel stronger, your veins are coursing with denser magic and your mana shield has "
-                       "strengthened!", "yellow")
+        Helpers.print_in_color("You feel stronger, your veins are coursing with denser magic and your mana shield has "
+                               "strengthened!", "yellow")
 
     def died(self) -> None:
         """
@@ -181,7 +181,7 @@ class Character:
         self.__level = 1
         self.__current_hp = 100
 
-        print_in_color("""
+        Helpers.print_in_color("""
                              __     __                    _____    _              _                                     
                              \ \   / /                   |  __ \  (_)            | |                                    
                               \ \_/ /    ___    _   _    | |  | |  _    ___    __| |                                    

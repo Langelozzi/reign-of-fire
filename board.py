@@ -3,7 +3,7 @@ Module containing the Board class.
 """
 import itertools
 
-from helpers import print_in_color
+from helpers import Helpers
 from actions import get_generic_actions, get_generic_room_description, \
     royal_mage_angelozzi, lord_commander_ymir, god_king_thompson
 
@@ -128,29 +128,29 @@ class Board:
         for y_coord in range(self.columns + 1, -1, -1):
             for x_coord in range(1, self.rows + 1, 1):
                 if y_coord == y_pos and x_coord == x_pos:
-                    print_in_color('|', "green", end="")
-                    print_in_color("#", "purple", end="")
-                    print_in_color('|', "green", end="")
+                    Helpers.print_in_color('|', "green", end="")
+                    Helpers.print_in_color("#", "purple", end="")
+                    Helpers.print_in_color('|', "green", end="")
 
                 elif (y_coord == 0 and x_coord == 1) or ((x_coord, y_coord) in self.board.keys()) and \
                         (self.board[(x_coord, y_coord)]["solved"]):
-                    print_in_color('| |', "green", end="")
+                    Helpers.print_in_color('| |', "green", end="")
 
                 elif (y_coord == boss_1_y and x_coord == boss_1_x) or (y_coord == boss_2_y and x_coord == boss_2_x):
-                    print_in_color('|', "green", end="")
-                    print_in_color("X", "red", end="")
-                    print_in_color('|', "green", end="")
+                    Helpers.print_in_color('|', "green", end="")
+                    Helpers.print_in_color("X", "red", end="")
+                    Helpers.print_in_color('|', "green", end="")
 
                 elif (y_coord == final_boss_y) and (x_coord == final_boss_x):
-                    print_in_color('|', "green", end="")
-                    print_in_color("\U0001F451", "red", end="")
-                    print_in_color('|', "green", end="")
+                    Helpers.print_in_color('|', "green", end="")
+                    Helpers.print_in_color("\U0001F451", "red", end="")
+                    Helpers.print_in_color('|', "green", end="")
 
                 elif (y_coord == 11 and x_coord != 10) or (y_coord == 0 and x_coord != 1):
-                    print_in_color('---', "green", end="")
+                    Helpers.print_in_color('---', "green", end="")
 
                 else:
-                    print_in_color('|?|', "green", end="")
+                    Helpers.print_in_color('|?|', "green", end="")
 
             print()
 
@@ -164,7 +164,7 @@ class Board:
         :postcondition: character object passed through this function will remain unchanged
         """
         current_position = character.get_position()
-        print_in_color(self.board[current_position]["description"], "cyan")
+        Helpers.print_in_color(self.board[current_position]["description"], "cyan")
 
     def is_valid_move(self, direction: str, character) -> bool:
         """
@@ -234,29 +234,29 @@ class Board:
 #     for y_coord in range(columns + 1, -1, -1):
 #         for x_coord in range(1, rows + 1, 1):
 #             if y_coord == y_pos and x_coord == x_pos:
-#                 print_in_color('|', "green", end="")
-#                 print_in_color("#", "purple", end="")
-#                 print_in_color('|', "green", end="")
+#                 Helpers.print_in_color('|', "green", end="")
+#                 Helpers.print_in_color("#", "purple", end="")
+#                 Helpers.print_in_color('|', "green", end="")
 #
 #             elif (y_coord == 0 and x_coord == 1) or ((x_coord, y_coord) in board.keys()) and \
 #                     (board[(x_coord, y_coord)]["solved"]):
-#                 print_in_color('| |', "green", end="")
+#                 Helpers.print_in_color('| |', "green", end="")
 #
 #             elif (y_coord == boss_1_y and x_coord == boss_1_x) or (y_coord == boss_2_y and x_coord == boss_2_x):
-#                 print_in_color('|', "green", end="")
-#                 print_in_color("X", "red", end="")
-#                 print_in_color('|', "green", end="")
+#                 Helpers.print_in_color('|', "green", end="")
+#                 Helpers.print_in_color("X", "red", end="")
+#                 Helpers.print_in_color('|', "green", end="")
 #
 #             elif (y_coord == final_boss_y) and (x_coord == final_boss_x):
-#                 print_in_color('|', "green", end="")
-#                 print_in_color("\U0001F451", "red", end="")
-#                 print_in_color('|', "green", end="")
+#                 Helpers.print_in_color('|', "green", end="")
+#                 Helpers.print_in_color("\U0001F451", "red", end="")
+#                 Helpers.print_in_color('|', "green", end="")
 #
 #             elif (y_coord == 11 and x_coord != 10) or (y_coord == 0 and x_coord != 1):
-#                 print_in_color('---', "green", end="")
+#                 Helpers.print_in_color('---', "green", end="")
 #
 #             else:
-#                 print_in_color('|?|', "green", end="")
+#                 Helpers.print_in_color('|?|', "green", end="")
 #
 #         print()
 #
@@ -273,7 +273,7 @@ class Board:
 #     :postcondition: parameters passed through this function will remain unchanged
 #     """
 #     current_position = character["position"]
-#     print_in_color(self.board[current_position]["description"], "cyan")
+#     Helpers.print_in_color(self.board[current_position]["description"], "cyan")
 #
 #
 # def is_valid_move(direction: str, board: dict, character: dict) -> bool:

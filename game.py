@@ -4,7 +4,7 @@ The primary game module. Contains the game loop.
 
 from board import Board
 from character import Character
-from helpers import print_in_color, get_character_name
+from helpers import Helpers
 from actions import cell_description, opening_dialogue, game_completed
 
 
@@ -23,7 +23,7 @@ def game() -> None:
 
     board = Board(rows, columns, boss_1_coords, boss_2_coords)
 
-    character_name = get_character_name()
+    character_name = Helpers.get_character_name()
     character = Character(character_name)
 
     opening_dialogue()
@@ -52,7 +52,7 @@ def game() -> None:
                 if action_function is not None:
                     board.get_board()[character.get_position()]["solved"] = action_function(character)
             else:
-                print_in_color("\nYou have already completed your duties here, please move on.\n", "cyan")
+                Helpers.print_in_color("\nYou have already completed your duties here, please move on.\n", "cyan")
 
             if character.leveled_up():
                 character.level_up_sequence()
@@ -62,14 +62,15 @@ def game() -> None:
 
             achieved_goal = board.boss_defeated()
         else:
-            print_in_color("There is no path in that direction, you can't walk through walls!!", "red")
+            Helpers.print_in_color("There is no path in that direction, you can't walk through walls!!", "red")
 
     if achieved_goal:
         game_completed()
-        print_in_color("<-------------------------------------Final Stats---------------------------------->", "green")
+        Helpers.print_in_color("<-------------------------------------Final Stats---------------------------------->",
+                               "green")
         character.show_stats()
     else:
-        print_in_color("\nThanks for playing, we hope you play again sometime :)", "cyan")
+        Helpers.print_in_color("\nThanks for playing, we hope you play again sometime :)", "cyan")
 
 
 def main() -> None:
