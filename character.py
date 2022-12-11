@@ -17,16 +17,78 @@ class Character:
         if type(name) != str:
             raise TypeError('Character name must be a string!')
 
-        self.name = name
-        self.position = (1, 1)
-        self.max_hp = 100,
-        self.current_hp = 100
-        self.xp = 0
-        self.damage = 20
-        self.level = 1
-        self.abilities = ["Fireball"]
-        self.staff = None
-        self.armour = None
+        self.__name = name
+        self.__position = (1, 1)
+        self.__max_hp = 100,
+        self.__current_hp = 100
+        self.__xp = 0
+        self.__damage = 20
+        self.__level = 1
+        self.__abilities = ["Fireball"]
+        self.__staff = None
+        self.__armour = None
+
+    def get_position(self):
+        return self.__position
+
+    def show_stats(self) -> None:
+        """
+        Print the character's statistics formatted to stdout.
+
+        :postcondition: prints the character's statistics formatted to stdout
+        """
+        print('+----------------------------------------------------------------------------------+')
+        print('|', end="")
+        print_in_color('{:^82}'.format(self.__name), "red", end="")
+        print('|')
+        print('+----------------------------------------------------------------------------------+')
+
+        general_stats = [
+            ("Current Coordinates", self.__position),
+            ("Level", self.__level),
+            ("HP", f"{round(self.__current_hp)}/{self.__max_hp}"),
+        ]
+        xp_stat = ("XP (to next level)", f"{round(self.__xp)}/60") if self.__level < 3 \
+            else ("XP (to next level)", "Max")
+
+        general_stats.append(xp_stat)
+
+        for title, stat in general_stats:
+            print('{:<18}'.format("|"), end="")
+            print_in_color(f"{title:<20}", "blue", end="")
+            print("{:<45}".format(f": [ {stat} ]"), end="")
+            print('|')
+
+        print('+----------------------------------------------------------------------------------+')
+
+        inventory_stats = (
+            ("Staff", self.__staff),
+            ("Armour", self.__armour)
+        )
+        for item, gear in inventory_stats:
+            print('{:<18}'.format("|"), end="")
+            print_in_color(f"{item:<20}", "blue", end="")
+            try:
+                print('{:<54}'.format(
+                    f": [ {gear['name']} (\033[93m{'*' * gear['rarity']}\033[0m) ]"),
+                      end="")
+            except TypeError:
+                print('{:<45}'.format(f": None"), end="")
+            print('|')
+
+        print('+----------------------------------------------------------------------------------+')
+
+        print('{:<18}'.format("|"), end="")
+        print_in_color("{:<20}".format("Abilities"), "blue", end="")
+        print("{:<45}".format(f": [ {self.__abilities[0]} ]"), end="")
+        print('|')
+
+        for ability in self.__abilities[1:]:
+            print('{:<38}'.format("|"), end="")
+            print("{:<45}".format(f"  [ {ability} ]"), end="")
+            print('|')
+
+        print('+----------------------------------------------------------------------------------+')
 
     def choose_direction(self, board) -> str:
         """
@@ -39,7 +101,7 @@ class Character:
         :postcondition: prints the possible choices and returns the user selected choice as a string
         :return: the user selected choice as a string
         """
-        current_room = board.board[self.position]
+        current_room = board.board[self.__position]
         possible_directions = [direction for direction, coord in current_room["directions"].items() if
                                coord is not None]
 
@@ -164,65 +226,6 @@ def died(character: dict) -> None:
                                       \U00002620 Rip, you died. Skill issue. \U00002620                                                  
     """, "red")
 
-
-def show_stats(character: dict) -> None:
-    """
-    Print the character's statistics formatted to stdout. Does not modify the character dictionary.
-
-    :param character: a character in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with all proper keys
-    :postcondition: prints the character's statistics formatted to stdout
-    """
-    print('+----------------------------------------------------------------------------------+')
-    print('|', end="")
-    print_in_color('{:^82}'.format(character["name"]), "red", end="")
-    print('|')
-    print('+----------------------------------------------------------------------------------+')
-
-    general_stats = [
-        ("Current Coordinates", character['position']),
-        ("Level", character['level']),
-        ("HP", f"{round(character['current_hp'])}/{character['max_hp']}"),
-    ]
-    xp_stat = ("XP (to next level)", f"{round(character['xp'])}/60") if character["level"] < 3 \
-        else ("XP (to next level)", "Max")
-    general_stats.append(xp_stat)
-
-    for title, stat in general_stats:
-        print('{:<18}'.format("|"), end="")
-        print_in_color(f"{title:<20}", "blue", end="")
-        print("{:<45}".format(f": [ {stat} ]"), end="")
-        print('|')
-
-    print('+----------------------------------------------------------------------------------+')
-
-    inventory_stats = (
-        ("Staff", "staff"),
-        ("Armour", "armour")
-    )
-    for item, key in inventory_stats:
-        print('{:<18}'.format("|"), end="")
-        print_in_color(f"{item:<20}", "blue", end="")
-        try:
-            print('{:<54}'.format(f": [ {character[key]['name']} (\033[93m{'*' * character[key]['rarity']}\033[0m) ]"),
-                  end="")
-        except TypeError:
-            print('{:<45}'.format(f": None"), end="")
-        print('|')
-
-    print('+----------------------------------------------------------------------------------+')
-
-    print('{:<18}'.format("|"), end="")
-    print_in_color("{:<20}".format("Abilities"), "blue", end="")
-    print("{:<45}".format(f": [ {character['abilities'][0]} ]"), end="")
-    print('|')
-
-    for ability in character['abilities'][1:]:
-        print('{:<38}'.format("|"), end="")
-        print("{:<45}".format(f"  [ {ability} ]"), end="")
-        print('|')
-
-    print('+----------------------------------------------------------------------------------+')
 
 
 def main() -> None:
