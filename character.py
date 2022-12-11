@@ -33,18 +33,52 @@ class Character:
         self.__armour = None
 
     def get_name(self):
+        """
+        Get the value of name.
+
+        :postcondition: returns the value of name
+        :return: the value of name
+        """
         return self.__name
 
     def get_position(self):
+        """
+        Get the value of position.
+
+        :postcondition: returns the value of position
+        :return: the value of position
+        """
         return self.__position
 
     def get_max_hp(self):
+        """
+        Get the value of max_hp.
+
+        :postcondition: returns the value of max_hp
+        :return: the value of max_hp
+        """
         return self.__max_hp
 
     def get_current_hp(self):
+        """
+        Get the value of current_hp.
+
+        :postcondition: returns the value of current_hp
+        :return: the value of current_hp
+        """
         return self.__current_hp
 
     def set_current_hp(self, hp: int):
+        """
+        Set the value of current_hp.
+
+        :param hp: the new hp value to be set
+        :precondition: hp must be an integer
+        :raise TypeError: if hp is not an integer
+        :raise ValueError: if hp is not between 0 and max_hp inclusive
+        :postcondition: Sets the value of current_hp to hp
+        """
+
         if type(hp) is not int:
             raise TypeError('hp must be an integer')
         if (hp < 0) or (hp > self.__max_hp):
@@ -53,44 +87,112 @@ class Character:
         self.__current_hp = hp
 
     def get_xp(self):
+        """
+        Get the value of xp.
+
+        :postcondition: returns the value of xp
+        :return: the value of xp
+        """
         return self.__xp
 
     def set_xp(self, xp: int):
+        """
+        Set the value of xp.
+
+        :param xp: the new xp value to be set
+        :precondition: xp must be an integer
+        :raise TypeError: if xp is not an integer
+        :raise ValueError: if xp is less than 0 inclusive
+        :postcondition: Sets the value of xp to xp
+        """
         if type(xp) is not int:
             raise TypeError('xp must be an integer')
         if xp < 0:
-            raise ValueError('xp must be between 0 and 60 inclusive')
+            raise ValueError('xp must be greater than 0')
 
         self.__xp = xp
 
     def get_damage(self):
+        """
+        Get the value of damage.
+
+        :postcondition: returns the value of damage
+        :return: the value of damage
+        """
         return self.__damage
 
     def get_level(self):
+        """
+        Get the value of level.
+
+        :postcondition: returns the value of level
+        :return: the value of level
+        """
         return self.__level
 
     def get_abilities(self):
+        """
+        Get the value of abilities.
+
+        :postcondition: returns the value of abilities
+        :return: the value of abilities
+        """
         return self.__abilities
 
     def get_staff(self):
+        """
+        Get the value of staff.
+
+        :postcondition: returns the value of staff
+        :return: the value of staff
+        """
         return self.__staff
 
     def set_staff(self, new_staff: dict):
+        """
+        Set the value of staff.
+
+        :param new_staff: the new staff as a dictionary
+        :precondition: new_staff must be a dictionary
+        :raise TypeError: if new_staff is not a dictionary
+        :postcondition: Sets the value of staff to new_staff
+        """
         if type(new_staff) is not dict:
             raise TypeError("Staff must be a dictionary")
 
         self.__staff = new_staff
 
     def get_armour(self):
+        """
+        Get the value of armour.
+
+        :postcondition: returns the value of armour
+        :return: the value of armour
+        """
         return self.__armour
 
     def set_armour(self, new_armour: dict):
+        """
+        Set the value of armour.
+
+        :param new_armour: the new armour as a dictionary
+        :precondition: new_armour must be a dictionary
+        :raise TypeError: if new_armour is not a dictionary
+        :postcondition: Sets the value of armour to new_armour
+        """
         if type(new_armour) is not dict:
             raise TypeError("Armour must be a dictionary")
 
         self.__armour = new_armour
 
     def add_ability(self, new_ability: str) -> None:
+        """
+        Append new_ability to the abilities list.
+
+        :param new_ability: a string
+        :precondition: new_ability must be a string
+        :postcondition: appends new_ability to the abilities list
+        """
         self.__abilities.append(new_ability)
 
     def show_stats(self) -> None:
@@ -156,8 +258,6 @@ class Character:
         """
         Print possible choices and return the user's selected choice.
 
-        The board and character dictionaries are not modified.
-
         :param board: a board object
         :precondition: board must be a board object
         :postcondition: prints the possible choices and returns the user selected choice as a string
@@ -189,7 +289,7 @@ class Character:
 
     def is_alive(self) -> bool:
         """
-        Determine if the character is still alive or not. Does not modify the character dictionary.
+        Determine if the character is still alive or not.
 
         :postcondition: Returns True if character is alive, False otherwise
         :return: True if character is alive, False otherwise
@@ -201,7 +301,7 @@ class Character:
 
     def leveled_up(self) -> bool:
         """
-        Determine if the character has leveled up. Does not modify the character dictionary.
+        Determine if the character has leveled up.
 
         :postcondition: returns True if the character leveled up, otherwise False
         :return: True if the character leveled up, otherwise False
@@ -210,7 +310,7 @@ class Character:
 
     def level_up_sequence(self) -> None:
         """
-        Increase character level, reset xp to 0 and print ascii art. Modifies the original character dictionary.
+        Increase character level, reset xp to 0 and print ascii art.
 
         :postcondition: increases the character level, resets xp to 0 and prints ascii art.
         """
@@ -234,7 +334,7 @@ class Character:
         """
         Resets character position to start and character level to 1 as if they just started the game.
 
-        All items and abilities are retained. Ascii art gets printed. Modifies the original character dictionary.
+        All items and abilities are retained. Ascii art gets printed.
 
         :postcondition: Resets character position to start and character level to 1
         """
