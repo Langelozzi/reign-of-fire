@@ -24,8 +24,6 @@ class Enemy:
         """
         Print dialog and receive decisions for battle mechanics.
 
-        The character and enemy dictionaries do get modified during execution.
-
         :param character: a Character object
         :precondition: character must be a Character object
         :postcondition: prints dialog and receives decisions for battle mechanics
@@ -48,13 +46,18 @@ class Enemy:
             except TypeError:
                 damage_given = character.get_damage() * character.get_level()
 
-            self.__current_hp -= round(damage_given)
+            if (self.__current_hp - round(damage_given)) < 0:
+                self.__current_hp = 0
+            else:
+                self.__current_hp -= round(damage_given)
 
             Helpers.print_in_color(f"But the {self.__name}'s attack lands successfully as well", "cyan")
             # character health with decrease by 10 * (1 + (0.2 * enemy level))
             damage_taken = 10 * (1 + (0.2 * self.__level))
 
             updated_hp = round(character.get_current_hp() - damage_taken)
+            if updated_hp < 0:
+                updated_hp = 0
             character.set_current_hp(updated_hp)
 
             Helpers.print_in_color(
@@ -77,20 +80,33 @@ class Enemy:
 
             enemy_item = self.__item
 
-            if enemy_item and (enemy_item["type"] == "staff") and (
-                    enemy_item["rarity"] > character.get_staff()["rarity"]):
+            try:
+                character_staff_rarity = character.get_staff()["rarity"]
+            except TypeError:
+                character_staff_rarity = 0
+
+            try:
+                character_armour_rarity = character.get_armour()["rarity"]
+            except TypeError:
+                character_armour_rarity = 0
+
+            if (
+                    enemy_item and
+                    enemy_item["type"] == "staff" and
+                    enemy_item["rarity"] > character_staff_rarity
+            ):
                 staff = {
                     key: value for key, value in enemy_item.items() if key != 'type'
                 }
                 character.set_staff(staff)
 
                 Helpers.print_in_color(
-                    f"[{character.get_name()} | {enemy_item['type']}: +{enemy_item['name']}]\n",
-                    "yellow")
+                    f"[{character.get_name()} | {enemy_item['type']}: +{enemy_item['name']}]\n", "yellow"
+                )
             elif (
                     enemy_item and
                     enemy_item["type"] == "armour" and
-                    enemy_item["rarity"] > character.get_armour()["rarity"]
+                    enemy_item["rarity"] > character_armour_rarity
             ):
                 armour = {
                     key: value for key, value in enemy_item.items() if key != 'type'
