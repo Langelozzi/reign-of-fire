@@ -11,7 +11,7 @@ class GenericRooms:
     """
 
     @staticmethod
-    def spider_web_blockade(character) -> None:
+    def spider_web_blockade(character) -> bool:
         """
         Print the spider web blockade room dialog and interactions.
 
@@ -42,6 +42,8 @@ class GenericRooms:
             character.set_xp(new_xp)
 
             Helpers.print_in_color(f"\n[{character.get_name()} | xp: +12]", "yellow")
+
+        return True
 
     @staticmethod
     def empty_room(character) -> bool:
