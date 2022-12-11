@@ -8,6 +8,7 @@ import json
 
 from character import Character
 from helpers import Helpers
+from riddle import Riddle
 
 
 # Spider Web -----------------------------------------------------------------------------------------------------------
@@ -575,7 +576,8 @@ def create_batch_of_riddles(amount: int) -> list:
         riddles_data = json.load(file_object)
 
         for riddle in riddles_data:
-            riddles.append(generate_riddle(riddle))
+            new_riddle = Riddle(riddle)
+            riddles.append(new_riddle.tell)
 
     return riddles[:amount + 1]
 
