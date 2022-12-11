@@ -28,8 +28,35 @@ class Character:
         self.__staff = None
         self.__armour = None
 
+    def get_name(self):
+        return self.__name
+
     def get_position(self):
         return self.__position
+
+    def get_max_hp(self):
+        return self.__max_hp
+
+    def get_current_hp(self):
+        return self.__current_hp
+
+    def get_xp(self):
+        return self.__xp
+
+    def get_damage(self):
+        return self.__damage
+
+    def get_level(self):
+        return self.__level
+
+    def get_abilities(self):
+        return self.__abilities
+
+    def get_staff(self):
+        return self.__staff
+
+    def get_armour(self):
+        return self.__armour
 
     def show_stats(self) -> None:
         """
