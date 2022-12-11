@@ -3,157 +3,13 @@ Contains functions related to the actions and dialog of each room on the game bo
 """
 import itertools
 import random
-import time
 import json
 
 from character import Character
 from helpers import Helpers
 from riddle import Riddle
 from generic_rooms import GenericRooms
-
-
-# Default Battles ------------------------------------------------------------------------------------------------------
-def fight(character: Character, enemy: dict) -> bool:
-    """
-    Print dialog and receive decisions for battle mechanics.
-
-    The character and enemy dictionaries do get modified during execution.
-
-    :param character: a character in dictionary form
-    :param enemy: an enemy in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with all proper keys
-    :precondition: enemy must be a dictionary in the form of our game enemies with all proper keys
-    :postcondition: prints dialog and receives decisions for battle mechanics
-    :postcondition: returns True if character wins the fight, otherwise False
-    :return: True if character wins the fight, otherwise False
-    """
-    Helpers.print_in_color(f"\nBoth you and the {enemy['name']} step forward, and prepare for a battle..\n", "cyan")
-
-    while (character.get_current_hp() > 0) and (enemy["current_hp"] > 0):
-        ability_options = list(enumerate(character.get_abilities(), start=1))
-        Helpers.print_user_options(ability_options, "Ability")
-
-        chosen_ability = Helpers.get_user_choice(ability_options)
-
-        Helpers.print_in_color(f"\nYour {chosen_ability} hits the {enemy['name']}", "cyan")
-        # enemy health will decrease by character damage * character level * (1 + (0.1 * staff rarity))
-        try:
-            damage_given = (character.get_damage() * character.get_level() *
-                            (1 + (0.2 * character.get_staff()["rarity"])))
-        except TypeError:
-            damage_given = character.get_damage() * character.get_level()
-
-        enemy["current_hp"] -= round(damage_given)
-
-        Helpers.print_in_color(f"But the {enemy['name']}'s attack lands successfully as well", "cyan")
-        # character health with decrease by 10 * (1 + (0.2 * enemy level))
-        damage_taken = 10 * (1 + (0.2 * enemy["level"]))
-
-        updated_hp = round(character.get_current_hp() - damage_taken)
-        character.set_current_hp(updated_hp)
-
-        Helpers.print_in_color(f"\n[{character.get_name()} | hp: {character.get_current_hp()}/{character.get_max_hp()}]"
-                               , "yellow")
-        print(f"[{enemy['name']} | hp: {enemy['current_hp']}/{enemy['max_hp']}]")
-
-    if (enemy["current_hp"] <= 0) and (character.get_current_hp() > 0):
-        Helpers.print_in_color(f"\n\nCongratulations! You have defeated the {enemy['name']}", "cyan")
-
-        if enemy["level"] > character.get_level():
-            earned_xp = 15 * ((enemy["level"] - character.get_level()) + 1)
-        else:
-            earned_xp = 15
-
-        if character.get_level() < 3:
-            updated_xp = round(character.get_xp() + earned_xp)
-            character.set_xp(updated_xp)
-            Helpers.print_in_color(f"\n[{character.get_name()} | xp: +{earned_xp}]", "yellow")
-
-        enemy_item = enemy["item"]
-
-        if enemy_item and (enemy_item["type"] == "staff") and (enemy_item["rarity"] > character.get_staff()["rarity"]):
-            staff = {
-                key: value for key, value in enemy['item'].items() if key != 'type'
-            }
-            character.set_staff(staff)
-
-            Helpers.print_in_color(f"[{character.get_name()} | {enemy['item']['type']}: +{enemy['item']['name']}]\n",
-                                   "yellow")
-        elif (
-                enemy_item and
-                enemy_item["type"] == "armour" and
-                enemy_item["rarity"] > character.get_armour()["rarity"]
-        ):
-            armour = {
-                key: value for key, value in enemy['item'].items() if key != 'type'
-            }
-            character.set_armour(armour)
-
-            Helpers.print_in_color(f"[{character.get_name()} | {enemy['item']['type']}: +{enemy['item']['name']}]\n",
-                                   "yellow")
-
-        enemy["current_hp"] = enemy["max_hp"]
-        return True
-
-    enemy["current_hp"] = enemy["max_hp"]
-    return False
-
-
-def fight_decision() -> str:
-    """
-    Display battle choices for user and return decision received from stdin.
-
-    :postcondition: displays battle choices for user and returns decision received from stdin as a string
-    :return: user decision received from stdin as a string
-    """
-    options = list(enumerate(["Fight", "Flee"], start=1))
-
-    Helpers.print_user_options(options, "Choice")
-
-    return Helpers.get_user_choice(options, True)
-
-
-def generate_enemy_battle(enemy: dict):
-    """
-    Generate an enemy battle function with the enemy data.
-
-    :param enemy: an enemy in dictionary form
-    :precondition: enemy must be a dictionary in the form of our game enemies with all proper keys
-    :postcondition: generates a function with the specific enemy data
-    :return: an enemy battle function with the specific enemy data
-    """
-
-    def enemy_battle(character: Character) -> bool:
-        """
-        Print dialog and receive decisions for choosing whether to start an enemy battle.
-
-        The character dictionary is modified during execution.
-
-        :param character: a character in dictionary form
-        :precondition: character must be a dictionary in the form of our game character with all proper keys
-        :postcondition: prints dialog and receive decisions for choosing whether to start an enemy battle
-        :postcondition: returns True if character wins the enemy battle, otherwise False
-        :return: True if character wins the enemy battle, otherwise False
-        """
-        Helpers.print_in_color(f"Out of the corner of your eye you see a {enemy['name']} appear!\n", "cyan")
-
-        if character.get_level() < enemy["level"]:
-            Helpers.print_in_color(f"This enemies level is greater than yours, you might want to weigh your options "
-                                   f"before "
-                                   f"you make your decision\n", "red")
-
-        decision = fight_decision()
-
-        if int(decision) == 1:
-            return fight(character, enemy)
-        else:
-            Helpers.print_in_color(f"\nAs you turn to flee the {enemy['name']} says:", "cyan")
-            print("I should have guessed. You do seem like a cowardly creature. I will be here if you wish "
-                  "to return with a bit more courage..")
-            return False
-
-    return enemy_battle
-
+from enemy import Enemy
 
 # Sub-Boss 1: Lord-Commander Ymir --------------------------------------------------------------------------------------
 def lord_commander_ymir():
@@ -358,7 +214,8 @@ def create_batch_of_enemy_battles(amount: int) -> list:
         enemy_data = json.load(file_object)
 
         for enemy in enemy_data:
-            battles.append(generate_enemy_battle(enemy))
+            new_enemy = Enemy(enemy)
+            battles.append(new_enemy.battle)
 
     return battles[:amount + 1]
 
