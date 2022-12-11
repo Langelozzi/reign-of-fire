@@ -5,7 +5,7 @@ The primary game module. Contains the game loop.
 from board import Board
 from character import Character
 from helpers import Helpers
-from actions import cell_description, opening_dialogue, game_completed
+from story import Story
 
 
 def game() -> None:
@@ -26,8 +26,8 @@ def game() -> None:
     character_name = Helpers.get_character_name()
     character = Character(character_name)
 
-    opening_dialogue()
-    cell_description()
+    Story.opening_dialogue()
+    Story.cell_description()
 
     achieved_goal = False
     while not achieved_goal:
@@ -65,7 +65,7 @@ def game() -> None:
             Helpers.print_in_color("There is no path in that direction, you can't walk through walls!!", "red")
 
     if achieved_goal:
-        game_completed()
+        Story.game_completed()
         Helpers.print_in_color("<-------------------------------------Final Stats---------------------------------->",
                                "green")
         character.show_stats()
