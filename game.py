@@ -1,5 +1,5 @@
 """
-The primary game module. Contains the game loop.
+The primary game module. Contains the main game loop in the Game class.
 """
 
 from board import Board
