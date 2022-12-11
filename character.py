@@ -146,31 +146,27 @@ class Character:
         """
         return True if (self.__xp >= 60) and (self.__level < 3) else False
 
+    def level_up_sequence(self) -> None:
+        """
+        Increase character level, reset xp to 0 and print ascii art. Modifies the original character dictionary.
 
-def level_up_sequence(character: dict) -> None:
-    """
-    Increase character level, reset xp to 0 and print ascii art. Modifies the original character dictionary.
-
-    :param character: a character in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with at least the keys "xp" and
-    "level"
-    :postcondition: increases the character level, resets xp to 0 and prints ascii art.
-    """
-    character["level"] += 1
-    character["xp"] = 0
-    print_in_color("""
-                          _                              _     _    _           _                                                             
-                         | |                            | |   | |  | |         | |                                                            
-                         | |        ___  __   __   ___  | |   | |  | |  _ __   | |                                                            
-                         | |       / _ \ \ \ / /  / _ \ | |   | |  | | | '_ \  | |                                      
-                         | |____  |  __/  \ V /  |  __/ | |   | |__| | | |_) | |_|                                      
-                         |______|  \___|   \_/    \___| |_|    \____/  | .__/  (_)                                      
-                                                                       | |                                                                    
-                                                                       |_|                                                                    
-                                     \U0001F386 Congrats you leveled up \U0001F386 	                
-    """, "yellow")
-    print_in_color("You feel stronger, your veins are coursing with denser magic and your mana shield has "
-                   "strengthened!", "yellow")
+        :postcondition: increases the character level, resets xp to 0 and prints ascii art.
+        """
+        self.__level += 1
+        self.__xp = 0
+        print_in_color("""
+                              _                              _     _    _           _                                                             
+                             | |                            | |   | |  | |         | |                                                            
+                             | |        ___  __   __   ___  | |   | |  | |  _ __   | |                                                            
+                             | |       / _ \ \ \ / /  / _ \ | |   | |  | | | '_ \  | |                                      
+                             | |____  |  __/  \ V /  |  __/ | |   | |__| | | |_) | |_|                                      
+                             |______|  \___|   \_/    \___| |_|    \____/  | .__/  (_)                                      
+                                                                           | |                                                                    
+                                                                           |_|                                                                    
+                                         \U0001F386 Congrats you leveled up \U0001F386 	                
+        """, "yellow")
+        print_in_color("You feel stronger, your veins are coursing with denser magic and your mana shield has "
+                       "strengthened!", "yellow")
 
 
 def died(character: dict) -> None:
