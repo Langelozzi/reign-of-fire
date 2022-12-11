@@ -137,28 +137,14 @@ class Character:
         else:
             return True
 
+    def leveled_up(self) -> bool:
+        """
+        Determine if the character has leveled up. Does not modify the character dictionary.
 
-def leveled_up(character: dict) -> bool:
-    """
-    Determines if the character has leveled up. Does not modify the character dictionary.
-
-    :param character: a character in dictionary form
-    :precondition: character must be a dictionary in the form of our game character with at least the keys "xp" and
-    "level"
-    :postcondition: returns True if the character leveled up, otherwise False
-    :return: True if the character leveled up, otherwise False
-
-    >>> character1 = {"xp": 60, "level": 2}
-    >>> leveled_up(character1)
-    True
-    >>> character2 = {"xp": 59, "level": 2}
-    >>> leveled_up(character2)
-    False
-    >>> character3 = {"xp": 61, "level": 3}
-    >>> leveled_up(character3)
-    False
-    """
-    return True if (character['xp'] >= 60) and (character['level'] < 3) else False
+        :postcondition: returns True if the character leveled up, otherwise False
+        :return: True if the character leveled up, otherwise False
+        """
+        return True if (self.__xp >= 60) and (self.__level < 3) else False
 
 
 def level_up_sequence(character: dict) -> None:
