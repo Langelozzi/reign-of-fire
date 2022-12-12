@@ -12,6 +12,13 @@ class Riddle:
     """
 
     def __init__(self, riddle_data: dict):
+        """
+        Instantiate a new Riddle object.
+
+        :param riddle_data: a dictionary containing necessary riddle data
+        :precondition: riddle_data must be a dictionary containing the necessary riddle data
+        :postcondition: instantiates a new Riddle object
+        """
         if type(riddle_data) is not dict:
             raise TypeError("Riddle data must be a dictionary")
 

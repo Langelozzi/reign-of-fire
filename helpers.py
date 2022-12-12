@@ -103,7 +103,8 @@ class Helpers:
         The original options list does not get modified during execution.
 
         :param options: a list of enumerated options
-        :param numeric: a boolean representing if the returned string should be the command or the option. Default is False.
+        :param numeric: a boolean representing if the returned string should be the command or the option.
+                        Default is False.
         :precondition: options must be an enumerated list of options
         :precondition: numeric must be a boolean. Default is False.
         :postcondition: returns the user's selected option or number as a string
