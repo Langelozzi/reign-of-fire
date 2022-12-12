@@ -11,6 +11,14 @@ class Enemy:
     """
 
     def __init__(self, enemy_data: dict):
+        """
+        Instantiate a new Enemy object.
+
+        :param enemy_data: a dictionary containing the required keys
+        :precondition: enemy_data must be a dictionary containing the required keys
+        :postcondition: instantiates a new Enemy object
+        :raise TypeError: if enemy_data is not a dictionary
+        """
         if type(enemy_data) is not dict:
             raise TypeError("Enemy_data must be a dictionary")
 
@@ -127,10 +135,8 @@ class Enemy:
         """
         Print dialog and receive decisions for choosing whether to start an enemy battle.
 
-        The character dictionary is modified during execution.
-
-        :param character: a character in dictionary form
-        :precondition: character must be a dictionary in the form of our game character with all proper keys
+        :param character: a Character object
+        :precondition: character must be a Character object
         :postcondition: prints dialog and receive decisions for choosing whether to start an enemy battle
         :postcondition: returns True if character wins the enemy battle, otherwise False
         :return: True if character wins the enemy battle, otherwise False
@@ -158,7 +164,16 @@ class Enemy:
 
 
 class RoyalMageAngelozzi(Enemy):
+    """
+    A subclass of Enemy representing the Royal Mage Angelozzi mini boss.
+    """
+
     def __init__(self):
+        """
+        Instantiate a new RoyalMageAngelozzi object.
+
+        :postcondition: instantiates a new RoyalMageAngelozzi object
+        """
         angelozzi = {
             "name": "Royal Battle-Mage Angelozzi",
             "max_hp": 250,
@@ -177,10 +192,8 @@ class RoyalMageAngelozzi(Enemy):
         """
         Print dialog and receive decisions for choosing whether to start the mini boss battle.
 
-        The character dictionary is modified during execution.
-
-        :param character: a character in dictionary form
-        :precondition: character must be a dictionary in the form of our game character with all proper keys
+        :param character: a Character object
+        :precondition: character must be a Character object
         :postcondition: prints dialog and receive decisions for choosing whether to start the mini boss battle
         :postcondition: returns True if character wins the mini boss battle, otherwise False
         :return: True if character wins the mini boss battle, otherwise False
@@ -218,7 +231,15 @@ class RoyalMageAngelozzi(Enemy):
 
 
 class LordCommanderYmir(Enemy):
+    """
+    A subclass of Enemy, representing the Lord Commander Ymir mini boss.
+    """
     def __init__(self):
+        """
+        Instantiate a new LordCommanderYmir object.
+
+        :postcondition: instantiates a new LordCommanderYmir object
+        """
         ymir = {
             "name": "Lord-Commander Ymir",
             "max_hp": 400,
@@ -237,10 +258,8 @@ class LordCommanderYmir(Enemy):
         """
         Print dialog and receive decisions for choosing whether to start the mini boss battle.
 
-        The character dictionary is modified during execution.
-
-        :param character: a character in dictionary form
-        :precondition: character must be a dictionary in the form of our game character with all proper keys
+        :param character: a Character object
+        :precondition: character must be a Character object
         :postcondition: prints dialog and receive decisions for choosing whether to start the mini boss battle
         :postcondition: returns True if character wins the mini boss battle, otherwise False
         :return: True if character wins the mini boss battle, otherwise False
@@ -280,7 +299,16 @@ class LordCommanderYmir(Enemy):
 
 
 class GodKingThompson(Enemy):
+    """
+    A subclass of Enemy representing the God King Thompson final boss.
+    """
+
     def __init__(self):
+        """
+        Instantiate a new GodKingThompson object.
+
+        :postcondition: instantiates a new GodKingThompson object
+        """
         thompson = {
             "name": "God-King Thompson",
             "max_hp": 450,
@@ -299,10 +327,8 @@ class GodKingThompson(Enemy):
         """
         Print dialog and receive decisions for choosing whether to start the final boss battle.
 
-        The character dictionary is modified during execution.
-
-        :param character: a character in dictionary form
-        :precondition: character must be a dictionary in the form of our game character with all proper keys
+        :param character: a Character object
+        :precondition: character must be a Character object
         :postcondition: prints dialog and receive decisions for choosing whether to start the final boss battle
         :postcondition: returns True if character wins the final boss battle, otherwise False
         :return: True if character wins the final boss battle, otherwise False
